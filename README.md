@@ -15,7 +15,7 @@ source /venv/bin/activate
 In order to run app, be in the virtualenvironment. Then, in the root directory, run
 
 ```
-uvicorn main::app --reload
+uvicorn main:app --reload
 ```
 
 ## Dependencies
