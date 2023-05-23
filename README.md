@@ -21,3 +21,11 @@ uvicorn main:app --reload
 ## Dependencies
 
 In requirements.txt. Install them with pip install requirements.txt
+
+## Testing
+
+Run unit tests with
+
+```
+python -m unittest discover -v
+```
