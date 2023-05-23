@@ -6,6 +6,7 @@ from fastapi import APIRouter
 
 from services import device_service
 from routers import device
+from routers import data
 
 # these are examples
 class Model(BaseModel):
@@ -47,6 +48,8 @@ async def read_model(model_name: ModelName | None = None,
 
 # use routers like this    
 app.include_router(device.router)
+
+app.include_router(data.router)
 
 
    
