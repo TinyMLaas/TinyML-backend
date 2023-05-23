@@ -1,0 +1,3 @@
+Dataset_Name,Location,Size,Description
+Person Detection,data/,273.8 MB,human detection dataset
+Car Detection,data2/,148.3 MB,car detection dataset
