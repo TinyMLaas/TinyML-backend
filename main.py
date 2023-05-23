@@ -1,10 +1,13 @@
 from enum import Enum
 from pydantic import BaseModel
 
-
 from fastapi import FastAPI
+from fastapi import APIRouter
 
+from services import device_service
+from routers import device
 
+# these are examples
 class Model(BaseModel):
     name: str
     description: str
@@ -17,10 +20,10 @@ class ModelName(str, Enum):
 
 models = {0: {"name": None, "description": None}}
 
+
 app = FastAPI()
 
-backend_url = "http://127.0.0.1:8000"
-
+backend_url = "127.0.0.1"
 
 @app.post("/item/")
 async def create_item(model: Model):
@@ -41,3 +44,10 @@ async def read_model(model_name: ModelName | None = None,
 
     return {"model": models[model_id]["name"],
             "description": models[model_id]["description"]}
+
+# use routers like this    
+app.include_router(device.router)
+
+
+   
+    
