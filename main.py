@@ -1,13 +1,18 @@
 from enum import Enum
 from pydantic import BaseModel
 
-from fastapi import FastAPI
-from fastapi import APIRouter
+from fastapi import FastAPI, Request, status
+from fastapi.encoders import jsonable_encoder
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
+# from fastapi import APIRouter
 
-from services import device_service
+# from services import device_service
 from routers import device
 
 # these are examples
+
+
 class Model(BaseModel):
     name: str
     description: str
@@ -25,29 +30,37 @@ app = FastAPI()
 
 backend_url = "127.0.0.1"
 
-@app.post("/item/")
-async def create_item(model: Model):
-    models[1] = {"name": model.name, "description": model.description}
-    return {"message": "Model added"}
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(
+    request: Request,
+    exc: RequestValidationError
+):
+    return JSONResponse(
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        content=jsonable_encoder({"detail": exc.errors(), "body": exc.body})
+    )
 
 
-@app.get("/models/")
-async def read_model(model_name: ModelName | None = None,
-                     model_id: int = 0):
-    if model_name is ModelName.facerecognition:
-        return {"model_name": model_name,
-                "message": "Model for recognizing faces"}
+# @app.post("/item/")
+# async def create_item(model: Model):
+#     models[1] = {"name": model.name, "description": model.description}
+#     return {"message": "Model added"}
 
-    if model_name is ModelName.carrecognition:
-        return {"model_name": model_name,
-                "message": "Model for detecting cars"}
 
-    return {"model": models[model_id]["name"],
-            "description": models[model_id]["description"]}
+# @app.get("/models/")
+# async def read_model(model_name: ModelName | None = None,
+#                      model_id: int = 0):
+#     if model_name is ModelName.facerecognition:
+#         return {"model_name": model_name,
+#                 "message": "Model for recognizing faces"}
 
-# use routers like this    
+#     if model_name is ModelName.carrecognition:
+#         return {"model_name": model_name,
+#                 "message": "Model for detecting cars"}
+
+#     return {"model": models[model_id]["name"],
+#             "description": models[model_id]["description"]}
+
+# use routers like this
 app.include_router(device.router)
-
-
-   
-    

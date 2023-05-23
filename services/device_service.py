@@ -1,7 +1,17 @@
 import csv
 import json
 import pandas as pd
-from routers.device import Device
+from pydantic import BaseModel, Field
+# from routers.device import Device
+
+
+class Device(BaseModel):
+    name: str = Field(min_length=1)
+    connection: str | None = Field(default=None, min_length=1)
+    installer: str | None = Field(default=None, min_length=1)
+    compiler: str | None = Field(default=None, min_length=1)
+    model: str = Field(min_length=1)
+    description: str = Field(min_length=1)
 
 
 def get_max_id():
