@@ -1,8 +1,8 @@
+import os
 import csv
 import json
 import pandas as pd
 from pydantic import BaseModel, Field
-# from routers.device import Device
 
 
 class Device(BaseModel):
@@ -15,7 +15,7 @@ class Device(BaseModel):
 
 
 def get_max_id():
-    df = pd.read_csv("devices.csv")
+    df = pd.read_csv(os.environ["DEVICE_FILENAME"])
     return df["id"].astype(int).max() + 1
 
 
@@ -29,14 +29,14 @@ def add_device(device: Device):
             line += "," + type
         else:
             line += ",notgiven"
-    with open("devices.csv", "a", encoding="utf-8") as csv_file:
+    with open(os.environ["DEVICE_FILENAME"], "a", encoding="utf-8") as csv_file:
         csv_file.write(line)
 
 
 def get_registered_devices():
     json_array = []
 
-    with open("devices.csv", "r", encoding="utf-8") as csv_file:
+    with open(os.environ["DEVICE_FILENAME"], "r", encoding="utf-8") as csv_file:
         csvReader = csv.DictReader(csv_file)
 
         for row in csvReader:
