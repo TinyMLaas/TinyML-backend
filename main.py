@@ -21,8 +21,16 @@ class ModelName(str, Enum):
 
 models = {0: {"name": None, "description": None}}
 
+# This creates documentation, you can use markdown.
 
-app = FastAPI()
+tags = [
+    {
+        "name": "devices",
+        "description": "Shows a list of _registered_ **devices**."
+    }
+]
+
+app = FastAPI(openapi_tags=tags)
 
 backend_url = "127.0.0.1"
 
@@ -47,7 +55,7 @@ async def read_model(model_name: ModelName | None = None,
             "description": models[model_id]["description"]}
 
 # use routers like this    
-app.include_router(device.router)
+app.include_router(device.router, tags=["devices"])
 
 app.include_router(data.router)
 
