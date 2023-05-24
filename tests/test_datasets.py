@@ -16,7 +16,7 @@ class GetDatasets(unittest.TestCase):
 
     def test_backend_returns_names_and_size_of_datasets(self):
         client = TestClient(app)
-        response = client.get("/dataset_names/")
+        response = client.get("/dataset_names_size/")
         self.assertIsNotNone(response.text)
         assert response.status_code == 200
 
