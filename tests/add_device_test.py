@@ -39,7 +39,7 @@ class AddDevice(unittest.TestCase):
             "/add_device/",
             json=self.device_to_add
         )
-        assert response.status_code == 200
+        assert response.status_code == 201
 
     def test_add_device_device_added_to_csv(self):
         self.client.post(

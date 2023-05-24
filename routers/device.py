@@ -17,7 +17,7 @@ class Device(BaseModel):
 router = APIRouter()
 
 
-@router.post("/add_device/")
+@router.post("/add_device/", status_code=201)
 async def add_device(device: Device):
     """Route for adding a new device
     """
