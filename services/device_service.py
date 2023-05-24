@@ -1,6 +1,8 @@
 import csv
 import json
- 
+import pandas as pd
+
+
 
 def get_registered_devices():
     """Reads devices from a local csv file."""
@@ -15,4 +17,12 @@ def get_registered_devices():
     json_string = json.dumps(json_array)     
     
     return json_string
-                                
+
+def remove_device(device_id):
+    df = pd.read_csv("devices.csv")
+    print(device_id)
+    df_filtered = df.loc[df["id"] != int(device_id)]
+    print(df_filtered)
+    df_filtered.to_csv("devices.csv", index=False)
+    
+    return {"message": "yeah"}
