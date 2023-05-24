@@ -1,8 +1,9 @@
 import csv
 import json
  
- 
+
 def get_registered_devices():
+    """Reads devices from a local csv file."""
     json_array = []
     
     with open("devices.csv", "r", encoding="utf-8") as csv_file:
