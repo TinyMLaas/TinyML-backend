@@ -2,7 +2,6 @@ from fastapi import APIRouter
 from pydantic import BaseModel, Field
 from services import device_service
 
-
 class Device(BaseModel):
     """The request body for device adding
     """
@@ -22,7 +21,6 @@ async def add_device(device: Device):
     """Route for adding a new device
     """
     device_service.add_device(device)
-
 
 @router.get("/registered_devices/")
 async def list_registered_devices():

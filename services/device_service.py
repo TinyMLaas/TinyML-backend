@@ -43,6 +43,7 @@ def add_device(device: Device):
 
 
 def get_registered_devices():
+    """Reads devices from a local csv file."""
     json_array = []
 
     with open(os.environ["DEVICE_FILENAME"], "r", encoding="utf-8") as csv_file:
