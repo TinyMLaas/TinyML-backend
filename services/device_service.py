@@ -18,11 +18,16 @@ def get_registered_devices():
     
     return json_string
 
+
 def remove_device(device_id):
-    df = pd.read_csv("devices.csv")
-    print(device_id)
-    df_filtered = df.loc[df["id"] != int(device_id)]
-    print(df_filtered)
-    df_filtered.to_csv("devices.csv", index=False)
+    device_id = int(device_id)
     
-    return {"message": "yeah"}
+    df = pd.read_csv("devices.csv")
+    
+    if device_id in df["id"].values:
+        df_filtered = df.loc[df["id"] != device_id]
+        df_filtered.to_csv("devices.csv", index=False)
+    else:
+        raise ValueError()
+    
+    
