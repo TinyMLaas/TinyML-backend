@@ -4,3 +4,4 @@ id,Device name,Connection,Installer,Compiler,Model,Description
 10,Himax WE-I Plus EVB Endpoint AI Development Board,192.168.1.11,Arduino IDE,TFLiteConverter,  person_detection,
 3,STM32F746 Discovery kit,192.168.1.4,Arduino IDE,TFLiteConverter, mnist_lstm,
 7,testataaaaa,192.168.1.8,Arduino IDE,TFLiteConverter,  person_detection,
+0,Arduino,notgiven,notgiven,notgiven,Nano 33 BLE,has

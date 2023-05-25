@@ -19,7 +19,16 @@ def get_max_id():
     """
 
     df = pd.read_csv(os.environ["DEVICE_FILENAME"])
-    return df["id"].astype(int).max() + 1
+    ids = df["id"].to_list()
+    unique = set()
+    biggest = 0
+    for id in ids:
+        biggest = max(biggest, id)
+        unique.add(id)
+    for i in range(biggest+1):
+        if i not in unique:
+            return i
+    return biggest + 1
 
 
 def add_device(device: Device):
