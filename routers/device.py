@@ -2,6 +2,7 @@ from fastapi import APIRouter
 from pydantic import BaseModel, Field
 from services import device_service
 
+
 class Device(BaseModel):
     """The request body for device adding
     """
