@@ -15,8 +15,7 @@ class Device(BaseModel):
 
 
 def get_max_id():
-    """Get maximum id that exists in the current devices
-    """
+    """Get maximum id that exists in the current devices"""
 
     df = pd.read_csv(os.environ["DEVICE_FILENAME"])
     return df["id"].astype(int).max() + 1
@@ -31,8 +30,13 @@ def add_device(device: Device):
 
     id = get_max_id()
     line = f"\n{id},{device.name}"
-    types = [device.connection, device.installer,
-             device.compiler, device.model, device.description]
+    types = [
+        device.connection,
+        device.installer,
+        device.compiler,
+        device.model,
+        device.description,
+    ]
     for type in types:
         if type is not None:
             line += "," + type
