@@ -1,27 +1,10 @@
-from enum import Enum
-from pydantic import BaseModel
-
-from fastapi import FastAPI
-from fastapi import APIRouter
-
-from services import device_service
+import config
+from fastapi import FastAPI, Request, status
+from fastapi.encoders import jsonable_encoder
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
 from routers import device
 from routers import data
-
-# these are examples
-class Model(BaseModel):
-    name: str
-    description: str
-
-
-class ModelName(str, Enum):
-    facerecognition = "Face Recognition"
-    carrecognition = "Car Recognition"
-
-
-models = {0: {"name": None, "description": None}}
-
-# This creates documentation, you can use markdown.
 
 tags = [
     {
@@ -32,33 +15,20 @@ tags = [
 
 app = FastAPI(openapi_tags=tags)
 
-backend_url = "127.0.0.1"
 
-@app.post("/item/")
-async def create_item(model: Model):
-    models[1] = {"name": model.name, "description": model.description}
-    return {"message": "Model added"}
-
-
-@app.get("/models/")
-async def read_model(model_name: ModelName | None = None,
-                     model_id: int = 0):
-    if model_name is ModelName.facerecognition:
-        return {"model_name": model_name,
-                "message": "Model for recognizing faces"}
-
-    if model_name is ModelName.carrecognition:
-        return {"model_name": model_name,
-                "message": "Model for detecting cars"}
-
-    return {"model": models[model_id]["name"],
-            "description": models[model_id]["description"]}
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(
+    request: Request,
+    exc: RequestValidationError
+):
+    """Handles error response when body of a post request is wrong
+    """
+    return JSONResponse(
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        content=jsonable_encoder({"detail": exc.errors(), "body": exc.body})
+    )
 
 # use routers like this    
 app.include_router(device.router, tags=["devices"])
 
 app.include_router(data.router)
-
-
-   
-    
