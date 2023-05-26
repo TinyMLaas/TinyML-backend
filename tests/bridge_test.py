@@ -1,5 +1,6 @@
 import unittest
 import os
+import json
 from unittest import mock
 from fastapi.testclient import TestClient
 from main import app
@@ -44,7 +45,12 @@ class Bridge(unittest.TestCase):
         assert bridges['1']["address"] == "127.0.0.1"
 
     def test_registered_bridges(self):
-        pass
+        self.client.post(
+            "/add_bridge/",
+            json=self.data
+        )
+        bridges = json.loads(json.loads(self.client.get("/registered_bridges/").text))
+        assert bridges[0]["address"] == "127.0.0.1"
 
 
 if __name__ == "__main__":
