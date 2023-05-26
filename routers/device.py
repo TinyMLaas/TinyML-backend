@@ -1,6 +1,11 @@
-from fastapi import APIRouter
-from pydantic import BaseModel, Field
+from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel
+
 from services import device_service
+
+
+router = APIRouter()
+
 
 class Device(BaseModel):
     """The request body for device adding
@@ -11,9 +16,10 @@ class Device(BaseModel):
     compiler: str | None = Field(default=None, min_length=1)
     model: str = Field(min_length=1)
     description: str = Field(min_length=1)
+  
 
-
-router = APIRouter()
+class DeviceId(BaseModel):
+    device_id: int
 
 
 @router.post("/add_device/", status_code=201)
@@ -22,6 +28,18 @@ async def add_device(device: Device):
     """
     device_service.add_device(device)
 
+
 @router.get("/registered_devices/")
 async def list_registered_devices():
     return device_service.get_registered_devices()
+
+
+@router.delete("/remove_device/{device_id}")
+async def remove_registered_device(device_id):
+    try:
+        response = device_service.remove_device(device_id)    
+    except:
+        raise HTTPException(status_code=400, detail="Unknown device id.")
+    
+    return response
+  
