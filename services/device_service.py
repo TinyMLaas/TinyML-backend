@@ -59,9 +59,9 @@ def get_registered_devices():
 
 def remove_device(device_id):
     device_id = int(device_id)
-    
+
     df = pd.read_csv(os.environ["DEVICE_FILENAME"])
-    
+
     if device_id in df["id"].values:
         df_filtered = df.loc[df["id"] != device_id]
         df_filtered.to_csv(os.environ["DEVICE_FILENAME"], index=False)

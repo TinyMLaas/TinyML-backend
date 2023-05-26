@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from services import device_service
 
@@ -16,7 +16,7 @@ class Device(BaseModel):
     compiler: str | None = Field(default=None, min_length=1)
     model: str = Field(min_length=1)
     description: str = Field(min_length=1)
-  
+
 
 class DeviceId(BaseModel):
     device_id: int
@@ -37,9 +37,8 @@ async def list_registered_devices():
 @router.delete("/remove_device/{device_id}")
 async def remove_registered_device(device_id):
     try:
-        response = device_service.remove_device(device_id)    
+        response = device_service.remove_device(device_id)
     except:
         raise HTTPException(status_code=400, detail="Unknown device id.")
-    
+
     return response
-  
