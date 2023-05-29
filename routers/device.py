@@ -6,7 +6,6 @@ from services import device_service
 
 router = APIRouter()
 
-
 class Device(BaseModel):
     """The request body for device adding"""
 
