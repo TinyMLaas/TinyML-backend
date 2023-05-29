@@ -61,8 +61,7 @@ class AddDevice(unittest.TestCase):
                     "description": row[6]
                 }
                 devices[int(row[0])] = device
-        id = max(devices)
-        assert devices[id]["name"] == "Arduino"
+        assert devices[0]["name"] == "Arduino"
 
     def test_return_error_if_correct_data_not_given(self):
         self.device_to_add["description"] = None

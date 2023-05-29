@@ -15,11 +15,19 @@ class Device(BaseModel):
 
 
 def get_max_id():
-    """Get maximum id that exists in the current devices
-    """
+    """Get maximum id that exists in the current devices"""
 
     df = pd.read_csv(os.environ["DEVICE_FILENAME"])
-    return df["id"].astype(int).max() + 1
+    ids = df["id"].to_list()
+    unique = set()
+    biggest = 0
+    for id in ids:
+        biggest = max(biggest, id)
+        unique.add(id)
+    for i in range(biggest+1):
+        if i not in unique:
+            return i
+    return biggest + 1
 
 
 def add_device(device: Device):
@@ -31,8 +39,13 @@ def add_device(device: Device):
 
     id = get_max_id()
     line = f"\n{id},{device.name}"
-    types = [device.connection, device.installer,
-             device.compiler, device.model, device.description]
+    types = [
+        device.connection,
+        device.installer,
+        device.compiler,
+        device.model,
+        device.description,
+    ]
     for type in types:
         if type is not None:
             line += "," + type
@@ -55,3 +68,15 @@ def get_registered_devices():
     json_string = json.dumps(json_array)
 
     return json_string
+
+
+def remove_device(device_id):
+    device_id = int(device_id)
+
+    df = pd.read_csv(os.environ["DEVICE_FILENAME"])
+
+    if device_id in df["id"].values:
+        df_filtered = df.loc[df["id"] != device_id]
+        df_filtered.to_csv(os.environ["DEVICE_FILENAME"], index=False)
+    else:
+        raise ValueError()

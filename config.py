@@ -9,3 +9,4 @@ except FileNotFoundError:
     pass
 
 os.environ['DEVICE_FILENAME'] = os.getenv('DEVICE_FILENAME') or 'devices.csv'
+os.environ['BRIDGE_FILENAME'] = os.getenv('BRIDGE_FILENAME') or 'bridges.csv'
