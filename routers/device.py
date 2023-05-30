@@ -1,44 +1,55 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
+from sqlalchemy.orm import Session
 from pydantic import BaseModel, Field
 
 from services import device_service
+from schemas.device import Device, DeviceCreate
+from db.database import SessionLocal, engine
 
 
 router = APIRouter()
 
-class Device(BaseModel):
-    """The request body for device adding"""
 
-    name: str = Field(min_length=1)
-    connection: str | None = Field(default=None, min_length=1)
-    installer: str | None = Field(default=None, min_length=1)
-    compiler: str | None = Field(default=None, min_length=1)
-    model: str = Field(min_length=1)
-    description: str = Field(min_length=1)
-
-
-class DeviceId(BaseModel):
-    device_id: int
-
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 @router.post("/add_device/", status_code=201)
-async def add_device(device: Device):
+async def add_device(device: DeviceCreate):
     """Adds a device"""
     device_service.add_device(device)
 
 
-@router.get("/registered_devices/")
-async def list_registered_devices():
+# uses database
+@router.get("/registered_devices/")#, response_model=list[Device]) # tässä on häikkä!
+async def list_registered_devices(db: Session=Depends(get_db), skip: int = 0, limit: int = 100):
     """Displays registered devices"""
-    return device_service.get_registered_devices()
+    devices = device_service.get_all_devices(db, skip, limit)
+    # jostain syystä nämä eivät nyt tule tietokannassa sellaisessa muodossa, että ne menisivät tuohon Device malliin
+    return devices
 
 
 @router.delete("/remove_device/{device_id}")
-async def remove_registered_device(device_id):
+async def remove_registered_device(device_id, db: Session=Depends(get_db)):
     """Removes a device"""
+    print(device_id)
     try:
-        response = device_service.remove_device(device_id)
+        response = device_service.remove_device(db, device_id)
     except:
         raise HTTPException(status_code=400, detail="Unknown device id.")
-
+    
     return response
+
+
+# @router.delete("/remove_device/{device_id}")
+# async def remove_registered_device(device_id):
+#     """Removes a device"""
+#     try:
+#         response = device_service.remove_device(device_id)
+#     except:
+#         raise HTTPException(status_code=400, detail="Unknown device id.")
+
+#     return response
