@@ -18,7 +18,8 @@ jobs:
         run: pylint --fail-under=9.0 routers/ services/ main.py
   Repository-dispatch:
       # Only run if tests succeed and the branch in main
-      if: success() && (github.ref == 'refs/heads/main')
+      if: ${{ always() && contains(join(needs.*.result, ','), success)}}
+      needs: Run-runittests-and-pylint
       runs-on: ubuntu-latest
       steps:
         - name: Do repository dispatch
