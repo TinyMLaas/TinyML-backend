@@ -15,9 +15,9 @@ jobs:
       - name: Run unittests
         run: pytest
       - name: Run pylint
-        if: (github.ref == 'ref/heads/main')
         run: pylint --fail-under=9.0 routers/ services/ main.py
   Repository-dispatch:
+      # Only run if tests succeed and the branch in main
       if: success() && (github.ref == 'refs/heads/main')
       runs-on: ubuntu-latest
       steps:
