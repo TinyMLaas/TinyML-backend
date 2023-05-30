@@ -19,7 +19,7 @@ jobs:
   Repository-dispatch:
       # Only run if tests succeed and the branch in main
       if: ${{ always() && contains(join(needs.*.result, ','), 'success') }}
-      needs: Run-runittests-and-pylint
+      needs: Run-unittests-and-pylint
       runs-on: ubuntu-latest
       steps:
         - name: Do repository dispatch
