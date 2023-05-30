@@ -7,7 +7,7 @@ backend for [TinyMLaaS](https://github.com/JeHugawa/TinyMLaaS-main/).
 To activate virtualenvironment, run
 
 ```
-source /venv/bin/activate
+source venv/bin/activate
 ```
 
 ## Run app
