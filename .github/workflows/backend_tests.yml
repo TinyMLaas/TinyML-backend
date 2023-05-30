@@ -1,0 +1,24 @@
+name: Backend Tests
+run-name: Run tests for backend
+on: push
+jobs:
+  Run-unittests-and-pylint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup python
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.10
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run unittests
+        run: pytest
+      - name: Run pylint
+        if: (github.ref == 'ref/heads/main')
+        run: pylint --fail-under=9.0 routers/ services/ main.py
+  Repository-dispatch:
+      - name: Do repository dispatch
+        if: success() && (github.ref == 'refs/heads/main')
+        run: |
+          curl -XPOST -u "${{ secrets.PAT_USERNAME }}:${{ secrets.PAT_TOKEN }}" -H "Accept: application/vnd.github.everest-preview+json" -H "Content-Type: application/json" https://api.github.com/repos/TinyMLaas/TinyMLaaS/dispatches --data '{"event_type": "Backend-CI"}'
