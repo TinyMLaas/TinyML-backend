@@ -115,6 +115,7 @@ class AddNewDevice(unittest.TestCase):
         
         self.assertIn("Now we test the adding ***!!!", check_added.text) 
         
+        
     def test_return_error_if_incorrect_data_given(self):
         self.device_to_add["description"] = None
         response = self.client.post(
@@ -123,6 +124,7 @@ class AddNewDevice(unittest.TestCase):
         )
         
         assert response.status_code == 422
+    
     
     @classmethod  
     def teardown_class(self):
