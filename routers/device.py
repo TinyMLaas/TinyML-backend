@@ -20,16 +20,18 @@ def get_db():
 @router.post("/add_device/", status_code=201)
 async def add_device(device: DeviceCreate, database: Session=Depends(get_db)):
     """Adds a device"""
-    response = device_service.add_device(database, device)
-    
+    try:
+        response = device_service.add_device(database, device)
+    except:
+        raise HTTPException(status_code=422, detail="Insufficient device information.")
     return response
 
 
 @router.get("/registered_devices/", response_model=list[Device])
 async def list_registered_devices(database: Session=Depends(get_db)):
     """Displays registered devices"""
-    devices = device_service.get_all_devices(database)
-    return devices
+    response = device_service.get_all_devices(database)
+    return response
 
 
 @router.delete("/remove_device/{device_id}", status_code=204)
