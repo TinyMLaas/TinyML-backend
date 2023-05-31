@@ -43,10 +43,6 @@ class RemoveDevice(unittest.TestCase):
         setup_database()
         self.client = TestClient(app)
 
-
-    @classmethod  
-    def teardown_class(self):
-        teardown_database()
             
     def test_device_removed_succesfully(self):
         response = self.client.delete(
@@ -69,6 +65,10 @@ class RemoveDevice(unittest.TestCase):
         
         assert response.status_code == 400
 
+    @classmethod  
+    def teardown_class(self):
+        teardown_database()
+
 
 class GetAllDevices(unittest.TestCase):
     @classmethod
@@ -76,18 +76,57 @@ class GetAllDevices(unittest.TestCase):
         setup_database()
         self.client = TestClient(app)
 
+    def test_backend_returns_list_of_registered_devices(self):
+        response = self.client.get("/registered_devices/")
+        self.assertIsNotNone(response.text)
+        assert response.status_code == 200
 
     @classmethod  
     def teardown_class(self):
         teardown_database()
             
     
-    def test_backend_returns_list_of_registered_devices(self):
-        response = self.client.get("/registered_devices/")
-        self.assertIsNotNone(response.text)
-        assert response.status_code == 200
+class AddNewDevice(unittest.TestCase):
+    @classmethod
+    def setup_class(self):        
+        setup_database()
+        self.client = TestClient(app)
+        
+        self.device_to_add = {
+            "name": "Arduino",
+            "connection": "192.168.1.10",
+            "installer": "Arduino IDE",
+            "compiler": "TFLiteConverter",
+            "model": "Nano 33 BLE",
+            "description": "Now we test the adding ***!!!"
+        }
+
+
+    def test_device_is_added(self):
+        response = self.client.post(
+            "/add_device/",
+            json=self.device_to_add
+        )
+        assert response.status_code == 201
+        
+        check_added = self.client.get(
+            "/registered_devices/"
+        )
+        
+        self.assertIn("Now we test the adding ***!!!", check_added.text) 
+        
+    def test_return_error_if_incorrect_data_given(self):
+        self.device_to_add["description"] = None
+        response = self.client.post(
+            "/add_device/",
+            json=self.device_to_add
+        )
+        
+        assert response.status_code == 422
     
-    
+    @classmethod  
+    def teardown_class(self):
+        teardown_database()        
 
 
 
