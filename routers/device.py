@@ -3,15 +3,16 @@ from sqlalchemy.orm import Session
 
 from services import device_service
 from schemas.device import Device, DeviceCreate
-from db.database import SessionLocal, engine
+from db.database import session#SessionLocal, engine
 
 router = APIRouter()
 
 from pydantic import BaseModel, Field
 
+sessionlocal = session
 
 def get_db():
-    db = SessionLocal()
+    db = sessionlocal#SessionLocal()
     try:
         yield db
     finally:
