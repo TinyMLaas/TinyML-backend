@@ -5,51 +5,39 @@ from services import device_service
 from schemas.device import Device, DeviceCreate
 from db.database import session
 
-import os
 
 router = APIRouter()
-
-#DATABASE_URL = os.environ["DATABASE_URL"]
-sessionlocal = session()#(DATABASE_URL)
+sessionlocal = session()
 
 def get_db():
-    db = session()
+    """Set up the database session for SQLAlchemy"""
+    database = session()
     try:
-        yield db
+        yield database
     finally:
-        db.close()
+        database.close()
 
 @router.post("/add_device/", status_code=201)
-async def add_device(device: DeviceCreate):
+async def add_device(device: DeviceCreate, database: Session=Depends(get_db)):
     """Adds a device"""
-    device_service.add_device(device)
-
-
-# uses database
-@router.get("/registered_devices/", response_model=list[Device])
-async def list_registered_devices(db: Session=Depends(get_db)):
-    """Displays registered devices"""
-    devices = device_service.get_all_devices(db)
-    return devices
-
-# uses database
-@router.delete("/remove_device/{device_id}", status_code=204)
-async def remove_registered_device(device_id, db: Session=Depends(get_db)):
-    """Removes a device"""
-    try:
-        response = device_service.remove_device(db, device_id)
-    except:
-        raise HTTPException(status_code=400, detail="Unknown device id.")
+    response = device_service.add_device(database, device)
     
     return response
 
 
-# @router.delete("/remove_device/{device_id}")
-# async def remove_registered_device(device_id):
-#     """Removes a device"""
-#     try:
-#         response = device_service.remove_device(device_id)
-#     except:
-#         raise HTTPException(status_code=400, detail="Unknown device id.")
+@router.get("/registered_devices/", response_model=list[Device])
+async def list_registered_devices(database: Session=Depends(get_db)):
+    """Displays registered devices"""
+    devices = device_service.get_all_devices(database)
+    return devices
 
-#     return response
+
+@router.delete("/remove_device/{device_id}", status_code=204)
+async def remove_registered_device(device_id, database: Session=Depends(get_db)):
+    """Removes a device"""
+    try:
+        response = device_service.remove_device(database, device_id)
+    except:
+        raise HTTPException(status_code=400, detail="Unknown device id.")
+
+    return response
