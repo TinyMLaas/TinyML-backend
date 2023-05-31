@@ -12,6 +12,10 @@ class DeviceBase(BaseModel):
 # when you read a device, it has gained an id
 class Device(DeviceBase):
     id: int
+    
+    # without this, everything explodes!!
+    class Config:
+        orm_mode = True
 
 # when creating, there is no id so use the basemodel
 class DeviceCreate(DeviceBase):

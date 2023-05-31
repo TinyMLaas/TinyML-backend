@@ -5,7 +5,7 @@ import pandas as pd
 
 # New database features
 from sqlalchemy.orm import Session
-from schemas.device import DeviceCreate, Device
+from schemas.device import DeviceCreate
 from db.models import Device
 
 
@@ -24,15 +24,12 @@ from db.models import Device
 #     db.refresh(db_item)
 #     return db_item
 
-def get_all_devices(db: Session, skip: int=0, limit: int=100):
+def get_all_devices(db: Session, skip: int=0, limit: int=1000):
     result = db.query(Device).offset(skip).limit(limit).all()
     return result
 
-def remove_device(db: Session, device_id: int, skip: int=0, limit: int=100):
-    print("service says:", device_id)
-    
-    device = db.query(models.Device).filter(models.Device.id == device_id).first()
-    
+def remove_device(db: Session, device_id: int, skip: int=0, limit: int=1000):
+    device = db.query(Device).filter(Device.id == device_id).first()
     
     if device == None:
         raise ValueError()
@@ -55,7 +52,7 @@ def get_max_id():
         unique.add(id)
     for i in range(biggest+1):
         if i not in unique:
-            return i
+            return iprint("service says:", device_id)
     return biggest + 1
 
 
@@ -98,8 +95,6 @@ def get_registered_devices():
 
     return json_string
 
-def get_registered_devices_db():
-    pass
 
 
 # def remove_device(device_id):

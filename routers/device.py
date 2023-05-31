@@ -1,13 +1,13 @@
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
-from pydantic import BaseModel, Field
 
 from services import device_service
 from schemas.device import Device, DeviceCreate
 from db.database import SessionLocal, engine
 
-
 router = APIRouter()
+
+from pydantic import BaseModel, Field
 
 
 def get_db():
@@ -24,18 +24,16 @@ async def add_device(device: DeviceCreate):
 
 
 # uses database
-@router.get("/registered_devices/")#, response_model=list[Device]) # tässä on häikkä!
-async def list_registered_devices(db: Session=Depends(get_db), skip: int = 0, limit: int = 100):
+@router.get("/registered_devices/", response_model=list[Device])
+async def list_registered_devices(db: Session=Depends(get_db)):
     """Displays registered devices"""
-    devices = device_service.get_all_devices(db, skip, limit)
-    # jostain syystä nämä eivät nyt tule tietokannassa sellaisessa muodossa, että ne menisivät tuohon Device malliin
+    devices = device_service.get_all_devices(db)
     return devices
 
-
-@router.delete("/remove_device/{device_id}")
+# uses database
+@router.delete("/remove_device/{device_id}", status_code=204)
 async def remove_registered_device(device_id, db: Session=Depends(get_db)):
     """Removes a device"""
-    print(device_id)
     try:
         response = device_service.remove_device(db, device_id)
     except:
