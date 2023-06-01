@@ -18,4 +18,14 @@ def session(DATABASE_URL=DATABASE_URL):
 
     return SessionLocal()
 
+
+def get_db():
+    """Set up the database session for SQLAlchemy"""
+    database = session()
+    try:
+        yield database
+    finally:
+        database.close()
+
 Base = declarative_base()
+

@@ -2,35 +2,29 @@ from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 
 from services import device_service
-from schemas.device import Device, DeviceCreate
-from db.database import session
+from schemas import schemas
+from db.database import get_db
 
 
 router = APIRouter()
-sessionlocal = session()
 
-def get_db():
-    """Set up the database session for SQLAlchemy"""
-    database = session()
-    try:
-        yield database
-    finally:
-        database.close()
 
-@router.post("/add_device/", status_code=201)
-async def add_device(device: DeviceCreate, database: Session=Depends(get_db)):
+@router.post("/add_device/", status_code=201, response_model=schemas.Device)
+async def add_device(device: schemas.DeviceCreate, database: Session=Depends(get_db)):
     """Adds a device"""
     try:
         response = device_service.add_device(database, device)
     except:
         raise HTTPException(status_code=422, detail="Insufficient device information.")
+    
     return response
 
 
-@router.get("/registered_devices/", response_model=list[Device])
+@router.get("/registered_devices/", response_model=list[schemas.Device])
 async def list_registered_devices(database: Session=Depends(get_db)):
     """Displays registered devices"""
     response = device_service.get_all_devices(database)
+    
     return response
 
 

@@ -27,7 +27,7 @@ def setup_database():
     with open("populate.sql") as f:
         populate = f.read()
 
-    cur.execute(schema)
+    cur.executescript(schema)
     cur.execute(populate)
     con.commit()
     con.close()
@@ -98,7 +98,8 @@ class AddNewDevice(unittest.TestCase):
             "installer": "Arduino IDE",
             "compiler": "TFLiteConverter",
             "model": "Nano 33 BLE",
-            "description": "Now we test the adding ***!!!"
+            "description": "Now we test the adding ***!!!",
+            "serial": "1234"
         }
 
 
