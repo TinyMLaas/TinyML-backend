@@ -14,17 +14,17 @@ async def add_device(device: schemas.DeviceCreate, database: Session=Depends(get
     """Adds a device"""
     try:
         response = device_service.add_device(database, device)
-    except:
-        raise HTTPException(status_code=422, detail="Insufficient device information.")
-    
+    except Exception as exc:
+        raise HTTPException(status_code=422, detail="Insufficient device information.") from exc
+
     return response
 
 
-@router.get("/registered_devices/", response_model=list[schemas.Device])
+@router.get("/registered_devices/", status_code=200, response_model=list[schemas.Device])
 async def list_registered_devices(database: Session=Depends(get_db)):
     """Displays registered devices"""
     response = device_service.get_all_devices(database)
-    
+
     return response
 
 
@@ -32,8 +32,6 @@ async def list_registered_devices(database: Session=Depends(get_db)):
 async def remove_registered_device(device_id, database: Session=Depends(get_db)):
     """Removes a device"""
     try:
-        response = device_service.remove_device(database, device_id)
-    except:
-        raise HTTPException(status_code=400, detail="Unknown device id.")
-
-    return response
+        device_service.remove_device(database, device_id)
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail="Unknown device id.") from exc
