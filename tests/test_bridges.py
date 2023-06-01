@@ -4,7 +4,7 @@ import unittest
 from fastapi.testclient import TestClient
 from main import app
 
-import routers.device
+import routers.bridge
 
 cleanup = True
 
@@ -38,30 +38,30 @@ def teardown_database():
         os.remove("test_database.db")
 
 
-class RemoveDevice(unittest.TestCase):
+class RemoveBridge(unittest.TestCase):
     @classmethod
     def setup_class(self):        
         setup_database()
         self.client = TestClient(app)
 
             
-    def test_device_removed_succesfully(self):
+    def test_bridge_removed_succesfully(self):
         response = self.client.delete(
-            "/remove_device/4"
+            "/bridges/2"
         )
         
         assert response.status_code == 204
         
         check_removal = self.client.get(
-            "/registered_devices/"
+            "/bridges/"
         )
         
-        self.assertNotIn("Commodore 64", check_removal.text)  
+        self.assertNotIn("Parking lot", check_removal.text)  
         
                     
-    def test_device_id_not_found_returns_error_code_400(self):
+    def test_bridge_id_not_found_returns_error_code_400(self):
         response = self.client.delete(
-            "/remove_device/999947382989324589164"
+            "/bridges/999947382989324589164"
         )
         
         assert response.status_code == 400
@@ -71,14 +71,17 @@ class RemoveDevice(unittest.TestCase):
         teardown_database()
 
 
-class GetAllDevices(unittest.TestCase):
+class GetAllBridges(unittest.TestCase):
     @classmethod
     def setup_class(self):        
         setup_database()
         self.client = TestClient(app)
 
-    def test_backend_returns_list_of_registered_devices(self):
-        response = self.client.get("/registered_devices/")
+    def test_backend_returns_list_of_registered_bridges(self):
+        response = self.client.get(
+            "/bridges/"
+        )
+        
         self.assertIsNotNone(response.text)
         assert response.status_code == 200
 
@@ -87,42 +90,37 @@ class GetAllDevices(unittest.TestCase):
         teardown_database()
             
     
-class AddNewDevice(unittest.TestCase):
+class AddNewBridges(unittest.TestCase):
     @classmethod
     def setup_class(self):        
         setup_database()
         self.client = TestClient(app)
         
-        self.device_to_add = {
-            "name": "Arduino",
-            "connection": "192.168.1.10",
-            "installer": "Arduino IDE",
-            "compiler": "TFLiteConverter",
-            "model": "Nano 33 BLE",
-            "description": "Now we test the adding ***!!!",
-            "serial": "1234"
+        self.bridge_to_add = {
+            "ip_address": "0.0.0.0",
+            "name": "Garage and mancave",
         }
 
 
-    def test_device_is_added(self):
+    def test_bridge_is_added(self):
         response = self.client.post(
-            "/add_device/",
-            json=self.device_to_add
+            "/bridges/",
+            json=self.bridge_to_add
         )
         assert response.status_code == 201
         
         check_added = self.client.get(
-            "/registered_devices/"
+            "/bridges/"
         )
         
-        self.assertIn("Now we test the adding ***!!!", check_added.text) 
+        self.assertIn("Garage and mancave", check_added.text) 
         
         
     def test_return_error_if_incorrect_data_given(self):
-        self.device_to_add["description"] = None
+        self.bridge_to_add["ip_address"] = None
         response = self.client.post(
-            "/add_device/",
-            json=self.device_to_add
+            "/bridges/",
+            json=self.bridge_to_add
         )
         
         assert response.status_code == 422
