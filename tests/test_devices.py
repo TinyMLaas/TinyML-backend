@@ -47,13 +47,13 @@ class RemoveDevice(unittest.TestCase):
             
     def test_device_removed_succesfully(self):
         response = self.client.delete(
-            "/remove_device/4"
+            "/devices/4"
         )
         
         assert response.status_code == 204
         
         check_removal = self.client.get(
-            "/registered_devices/"
+            "/devices/"
         )
         
         self.assertNotIn("Commodore 64", check_removal.text)  
@@ -61,7 +61,7 @@ class RemoveDevice(unittest.TestCase):
                     
     def test_device_id_not_found_returns_error_code_400(self):
         response = self.client.delete(
-            "/remove_device/999947382989324589164"
+            "/devices/999947382989324589164"
         )
         
         assert response.status_code == 400
@@ -78,7 +78,7 @@ class GetAllDevices(unittest.TestCase):
         self.client = TestClient(app)
 
     def test_backend_returns_list_of_registered_devices(self):
-        response = self.client.get("/registered_devices/")
+        response = self.client.get("/devices/")
         self.assertIsNotNone(response.text)
         assert response.status_code == 200
 
@@ -106,13 +106,13 @@ class AddNewDevice(unittest.TestCase):
 
     def test_device_is_added(self):
         response = self.client.post(
-            "/add_device/",
+            "/devices/",
             json=self.device_to_add
         )
         assert response.status_code == 201
         
         check_added = self.client.get(
-            "/registered_devices/"
+            "/devices/"
         )
         
         self.assertIn("Now we test the adding ***!!!", check_added.text) 
@@ -121,7 +121,7 @@ class AddNewDevice(unittest.TestCase):
     def test_return_error_if_incorrect_data_given(self):
         self.device_to_add["description"] = None
         response = self.client.post(
-            "/add_device/",
+            "/devices/",
             json=self.device_to_add
         )
         
