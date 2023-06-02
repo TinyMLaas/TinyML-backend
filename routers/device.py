@@ -9,7 +9,7 @@ from db.database import get_db
 router = APIRouter()
 
 
-@router.post("/add_device/", status_code=201, response_model=schemas.Device)
+@router.post("/devices/", status_code=201, response_model=schemas.Device)
 async def add_device(device: schemas.DeviceCreate, database: Session=Depends(get_db)):
     """Adds a device"""
     try:
@@ -20,7 +20,7 @@ async def add_device(device: schemas.DeviceCreate, database: Session=Depends(get
     return response
 
 
-@router.get("/registered_devices/", status_code=200, response_model=list[schemas.Device])
+@router.get("/devices/", status_code=200, response_model=list[schemas.Device])
 async def list_registered_devices(database: Session=Depends(get_db)):
     """Displays registered devices"""
     response = device_service.get_all_devices(database)
@@ -28,7 +28,7 @@ async def list_registered_devices(database: Session=Depends(get_db)):
     return response
 
 
-@router.delete("/remove_device/{device_id}", status_code=204)
+@router.delete("/devices/{device_id}", status_code=204)
 async def remove_registered_device(device_id, database: Session=Depends(get_db)):
     """Removes a device"""
     try:
