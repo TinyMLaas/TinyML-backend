@@ -6,7 +6,11 @@ CREATE TABLE IF NOT EXISTS "Devices"(
   compiler TEXT, 
   model TEXT, 
   description TEXT, 
+<<<<<<< HEAD
   serial TEXT UNIQUE);
+=======
+  serial TEXT);
+>>>>>>> 9beb2c05f36bd7ca66097c38021c086ae9484e04
 CREATE TABLE IF NOT EXISTS "Bridges"(
   id INTEGER PRIMARY KEY AUTOINCREMENT, 
   ip_address TEXT, 
