@@ -8,7 +8,6 @@ from db.database import get_db
 
 router = APIRouter()
 
-#HUOM Simon tulevat muutokset
 
 @router.post("/devices/", status_code=201, response_model=schemas.Device)
 async def add_device(device: schemas.DeviceCreate, database: Session=Depends(get_db)):

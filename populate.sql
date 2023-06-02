@@ -13,3 +13,10 @@ VALUES
   ("192.168.0.7", "Coffee room"),
   ("187.32.5.6", "Parking lot")
 ;
+
+INSERT INTO
+  Datasets(path, name, description)
+VALUES
+  ("data/cars_dataset/", "Car recognition", "Empty rooms vs. pictures of cars"),
+  ("data/people_dataset/", "Person recognition", "Empty rooms vs. pictures of people")
+;

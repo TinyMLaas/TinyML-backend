@@ -26,12 +26,6 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 # use routers like this
 app.include_router(device.router, tags=["Devices"])
 
-<<<<<<< HEAD
 app.include_router(dataset.router, tags=["Data"])
 
-app.include_router(bridge.router)
-=======
-app.include_router(data.router, tags=["Data"])
-
 app.include_router(bridge.router, tags=["Bridges"])
->>>>>>> 1bdd5c5318f11302760ded9babadab0c7c174753
