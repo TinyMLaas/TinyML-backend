@@ -18,7 +18,7 @@ jobs:
         run: pylint --fail-under=9.0 routers/ services/ db/ schemas/ main.py
   Repository-dispatch:
       # Only run if tests succeed and the branch in main
-      if: (needs.Run-unittests-and-pylint == 'success') && (github.ref == 'refs/heads/main')
+      if: (needs.Run-unittests-and-pylint.result == 'success') && (github.ref == 'refs/heads/main')
       needs: Run-unittests-and-pylint
       runs-on: ubuntu-latest
       steps:
