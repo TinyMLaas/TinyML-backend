@@ -20,7 +20,7 @@ uvicorn main:app --reload
 
 ## Dependencies
 
-In requirements.txt. Install them with pip install requirements.txt
+In requirements.txt. Install them with pip install -r requirements.txt
 
 ## Testing
 
