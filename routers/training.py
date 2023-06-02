@@ -13,8 +13,9 @@ class LossFunctions(str, Enum):
 class TrainingData(BaseModel):
     """The request body for the model training"""
 
-    model_name: str 
+    model_name: str
     dataset_name: str
+    dataset_path: str
     epochs: int
     img_width: int
     img_height: int

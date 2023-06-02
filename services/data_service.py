@@ -1,3 +1,7 @@
+from sqlalchemy.orm import Session
+from schemas import schemas
+from db import models
+
 import pandas as pd
 
 
@@ -16,3 +20,10 @@ def get_dataset_names_size():
     for name,size in zip(dataset_names, dataset_size):
         response.append({"name": name, "size":size},)
     return response
+
+
+#Returns dataset images
+def get_dataset_images(ds_id):
+    return
+    result =  database.select(models.Dataset).join(models.Images).filter(Images.id == Dataset.id)
+    
