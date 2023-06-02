@@ -15,7 +15,7 @@ def get_all_bridges(database: Session):
 def remove_bridge(database: Session, bridge_id: int):
     """Removes Bridge from database if it is there.
     """
-    print("Service says", bridge_id)
+
     bridge = database.query(models.Bridge).filter(models.Bridge.id == bridge_id).first()
 
     if bridge is None:
@@ -31,7 +31,7 @@ def add_bridge(database: Session, bridge: schemas.BridgeCreate):
     Args:
         bridge: the Bridge to be added
     """
-    print("Service says hi!")
+
     db_bridge = models.Bridge(ip_address=str(bridge.ip_address), name=bridge.name)
     database.add(db_bridge)
     database.commit()
