@@ -8,6 +8,8 @@ from apidocs import tags, description
 
 
 app = FastAPI(
+    openapi="3.0.2",
+    swagger="2.0",
     title=description.title,
     description=description.description,
     version=description.version,
