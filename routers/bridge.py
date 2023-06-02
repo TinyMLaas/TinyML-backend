@@ -16,7 +16,7 @@ async def add_bridge(bridge: schemas.BridgeCreate, database: Session=Depends(get
         response = bridge_service.add_bridge(database, bridge)
     except Exception as exc:
         raise HTTPException(status_code=422, detail="Insufficient bridge information.") from exc
-    
+
     return response
 
 
@@ -29,7 +29,7 @@ async def get_registered_bridges(database: Session=Depends(get_db)):
 
 
 @router.delete("/bridges/{bridge_id}", status_code=204)
-async def remove_registered_Bridge(bridge_id, database: Session=Depends(get_db)):
+async def remove_registered_bridge(bridge_id, database: Session=Depends(get_db)):
     """Removes a Bridge"""
     try:
         bridge_service.remove_bridge(database, bridge_id)

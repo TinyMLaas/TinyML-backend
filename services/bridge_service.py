@@ -7,7 +7,7 @@ from db import models
 def get_all_bridges(database: Session):
     """Returns a list of all bridges in the database
     """
-    
+
     result = database.query(models.Bridge).all()
     return result
 
@@ -53,4 +53,3 @@ def add_device(database: Session, device: schemas.DeviceCreate):
     database.refresh(db_device)
 
     return db_device
-
