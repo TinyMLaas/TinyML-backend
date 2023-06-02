@@ -3,7 +3,7 @@ from fastapi import FastAPI, Request, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
-from routers import device, bridge, data, training
+from routers import device, bridge, data, model
 from apidocs import tags, description
 
 
@@ -32,4 +32,4 @@ app.include_router(data.router)
 
 app.include_router(bridge.router)
 
-app.include_router(training.router)
+app.include_router(model.router)
