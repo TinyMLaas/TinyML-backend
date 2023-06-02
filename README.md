@@ -1,5 +1,5 @@
 # TinyML-backend
-
+![GitHub Actions](https://github.com/TinyMlaas/TinyML-backend/actions/workflows/main.yml/badge.svg)
 backend for [TinyMLaaS](https://github.com/JeHugawa/TinyMLaaS-main/).
 
 ## Virtualenvironment
