@@ -9,7 +9,7 @@ from db.database import get_db
 router = APIRouter()
 
 
-@router.post("/bridges/", status_code=201)#, response_model=schemas.Bridge)
+@router.post("/bridges/", status_code=201, response_model=schemas.Bridge)
 async def add_bridge(bridge: schemas.BridgeCreate, database: Session=Depends(get_db)):
     """Adds a bridge."""
     try:
