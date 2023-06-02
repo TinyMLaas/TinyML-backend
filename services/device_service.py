@@ -1,82 +1,39 @@
-import os
-import csv
-import json
-import pandas as pd
-from pydantic import BaseModel, Field
+from sqlalchemy.orm import Session
+from schemas import schemas
+from db import models
 
 
-class Device(BaseModel):
-    name: str = Field(min_length=1)
-    connection: str | None = Field(default=None, min_length=1)
-    installer: str | None = Field(default=None, min_length=1)
-    compiler: str | None = Field(default=None, min_length=1)
-    model: str = Field(min_length=1)
-    description: str = Field(min_length=1)
+def get_all_devices(database: Session):
+    """Returns a list of all devices in the database
+    """
+
+    result = database.query(models.Device).all()
+    return result
 
 
-def get_max_id():
-    """Get maximum id that exists in the current devices"""
+def remove_device(database: Session, device_id: int):
+    """Removes device from database if it is there.
+    """
 
-    df = pd.read_csv(os.environ["DEVICE_FILENAME"])
-    ids = df["id"].to_list()
-    unique = set()
-    biggest = 0
-    for id in ids:
-        biggest = max(biggest, id)
-        unique.add(id)
-    for i in range(biggest+1):
-        if i not in unique:
-            return i
-    return biggest + 1
+    device = database.query(models.Device).filter(models.Device.id == device_id).first()
+
+    if device is None:
+        raise KeyError()
+
+    database.delete(device)
+    database.commit()
 
 
-def add_device(device: Device):
+def add_device(database: Session, device: schemas.DeviceCreate):
     """Add a new device to the software
 
     Args:
         device: the device to be added
     """
 
-    id = get_max_id()
-    line = f"\n{id},{device.name}"
-    types = [
-        device.connection,
-        device.installer,
-        device.compiler,
-        device.model,
-        device.description,
-    ]
-    for type in types:
-        if type is not None:
-            line += "," + type
-        else:
-            line += ",notgiven"
-    with open(os.environ["DEVICE_FILENAME"], "a", encoding="utf-8") as csv_file:
-        csv_file.write(line)
+    db_device = models.Device(**device.dict())
+    database.add(db_device)
+    database.commit()
+    database.refresh(db_device)
 
-
-def get_registered_devices():
-    """Reads devices from a local csv file."""
-    json_array = []
-
-    with open(os.environ["DEVICE_FILENAME"], "r", encoding="utf-8") as csv_file:
-        csvReader = csv.DictReader(csv_file)
-
-        for row in csvReader:
-            json_array.append(row)
-
-    json_string = json.dumps(json_array)
-
-    return json_string
-
-
-def remove_device(device_id):
-    device_id = int(device_id)
-
-    df = pd.read_csv(os.environ["DEVICE_FILENAME"])
-
-    if device_id in df["id"].values:
-        df_filtered = df.loc[df["id"] != device_id]
-        df_filtered.to_csv(os.environ["DEVICE_FILENAME"], index=False)
-    else:
-        raise ValueError()
+    return db_device
