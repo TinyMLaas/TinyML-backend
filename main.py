@@ -1,10 +1,10 @@
-import config
 from fastapi import FastAPI, Request, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from routers import device, bridge, dataset, model
 from apidocs import tags, description
+import config  # pylint: disable=unused-import
 
 
 app = FastAPI(
@@ -18,7 +18,7 @@ app = FastAPI(
 
 
 @app.exception_handler(RequestValidationError)
-async def validation_exception_handler(request: Request, exc: RequestValidationError):
+async def validation_exception_handler(request: Request, exc: RequestValidationError):  # pylint: disable=unused-argument
     """Handles error response when body of a post request is wrong"""
     return JSONResponse(
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
