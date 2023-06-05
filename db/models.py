@@ -29,4 +29,17 @@ class Bridge(Base):
     id = Column(Integer, primary_key=True, index=True)
     ip_address = Column(String)
     name = Column(String)
+
+
+class Dataset(Base):
+    """Dataset that can be used to train models. 
+    Actual files are in a folder, database contains path to the folder.
+    """
+
+    __tablename__ = "Datasets"
+
+    id = Column(Integer, primary_key=True, index=True)
+    path = Column(Integer)
+    name = Column(Integer)
+    description = Column(Integer)
     

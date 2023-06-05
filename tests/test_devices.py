@@ -4,7 +4,6 @@ import unittest
 from fastapi.testclient import TestClient
 from main import app
 
-import routers.device
 
 cleanup = True
 

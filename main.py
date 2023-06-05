@@ -3,7 +3,7 @@ from fastapi import FastAPI, Request, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
-from routers import device, bridge, data
+from routers import device, bridge, dataset
 from apidocs import tags, description
 
 
@@ -28,6 +28,6 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 # use routers like this
 app.include_router(device.router, tags=["Devices"])
 
-app.include_router(data.router, tags=["Data"])
+app.include_router(dataset.router, tags=["Data"])
 
 app.include_router(bridge.router, tags=["Bridges"])

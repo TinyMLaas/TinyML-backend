@@ -13,6 +13,7 @@ class DeviceBase(BaseModel):
     description: str = Field(min_length=1)
     serial:  str = Field(min_length=1)
 
+
 class Device(DeviceBase):
     """If Device is in database, it always has an id.
     """
@@ -49,6 +50,22 @@ class Bridge(BridgeBase):
 class BridgeCreate(BridgeBase):
     """When creating a new Bridge, there is yet no id.
     """
+
+    class Config:
+        orm_mode = True
+
+class DatasetBase(BaseModel):
+    """Base for Dataset model. Lacsk id as it is assigned by database
+    """
+    path: str = Field(min_length=1)
+    name: str = Field(min_length=1)
+    description: str = Field(min_length=1)
+    size: str = Field(min_length=1)
+
+class Dataset(DatasetBase):
+    """If Bridge is in database, it always has an id.
+    """
+    id: int
 
     class Config:
         orm_mode = True
