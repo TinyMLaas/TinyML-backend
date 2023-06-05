@@ -4,3 +4,5 @@ __pycache__
 .vscode
 .pytest_cache
 tiny_mlaas.db
+TinyMLaaS_main
+
