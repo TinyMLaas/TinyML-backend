@@ -1,4 +1,5 @@
 import datetime
+from enum import Enum
 from ipaddress import IPv4Address
 from pydantic import BaseModel, Field
 
@@ -67,6 +68,7 @@ class DatasetBase(BaseModel):
     description: str = Field(min_length=1)
     size: str = Field(min_length=1)
 
+
 class Dataset(DatasetBase):
     """If Bridge is in database, it always has an id.
     """
@@ -130,3 +132,19 @@ class CompiledModelCreate(CompiledModelBase):
     class Config:
         orm_mode = True
     
+class TrainingData(BaseModel):
+    """The request body for the model training"""
+
+    model_name: str
+    epochs: int
+    img_width: int
+    img_height: int
+    batch_size: int
+
+
+class LossFunctions(str, Enum):
+    """Loss functions available in training
+    """
+
+    categorical_crossentropy = "Categorical crossentropy"
+    parse_categorical_crossentropy = "parse Categorical crossentropy"
