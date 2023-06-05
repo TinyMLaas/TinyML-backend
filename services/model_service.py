@@ -16,8 +16,7 @@ def call_training(ds_id, training_data, lossfunc, database: Session):
     )
     class_names = [name for name in os.listdir(dataset_path) if os.isdir(name)]
     image, prediction = trainmodel.prediction(model, class_names)
-    #
-    savemodel(model, training_data.model_name)
+    # savemodel(model, training_data.model_name)
     result = {"image": image, "prediction": prediction}
     return result
 
