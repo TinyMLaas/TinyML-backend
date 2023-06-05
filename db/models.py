@@ -58,13 +58,13 @@ class Model(Base):
     Model file is saved as pickle in database.
     """
     __tablename__ = "Models"
-    
+
     id = Column(Integer, primary_key=True, index=True)
-    created: Column(DateTime)
-    dataset_id: Column(Integer, ForeignKey("Datasets.id")) # foreign key
-    parameters: Column(String)  
-    description: Column(Integer)
-    model_file: Column(LargeBinary)
+    created = Column(DateTime)
+    dataset_id = Column(Integer, ForeignKey("Datasets.id"))
+    parameters = Column(String)
+    description = Column(String)
+    model_file = Column(LargeBinary)
 
 
 class CompiledModel(Base):
@@ -73,9 +73,9 @@ class CompiledModel(Base):
     """
 
     __tablename__ = "Compiled_models"
-    
+
     id = Column(Integer, primary_key=True, index=True)
-    created: Column(DateTime)
-    model_id: Column(Integer) # foreign key
-    compiler_id: Column(Integer) # foreign key
-    model_file: Column(LargeBinary)
+    created = Column(DateTime)
+    model_id = Column(Integer) # foreign key
+    compiler_id = Column(Integer) # foreign key
+    model_file = Column(LargeBinary)

@@ -81,7 +81,7 @@ class ModelBase(BaseModel):
     """Base for Model trained on Tensorflow. Lacks id as it is assigned by database
     """
     created: datetime.datetime | None
-    dataset_id: int # relationship
+    dataset_id: int
     parameters: dict
     description: str
     model_file: bytes
@@ -90,10 +90,11 @@ class ModelBase(BaseModel):
 class Model(ModelBase):
     """If Model is in database, it always has an id.
     """
-    int: id
+    id: int
 
     class Config:
         orm_mode = True
+
 
 class ModelCreate(ModelBase):
     """When creating a new Model, there is yet no id.
@@ -109,14 +110,14 @@ class CompiledModelBase(BaseModel):
     """
     created: datetime.datetime | None
     compiler_id: int # relationship
-    model_id: int # realtionship
+    model_id: int # relationship
     model_file: bytes
 
 
 class CompiledModel(CompiledModelBase):
     """If CompiledModel is in database, it always has an id.
     """
-    int: id
+    id: int
 
     class Config:
         orm_mode = True
@@ -128,5 +129,4 @@ class CompiledModelCreate(CompiledModelBase):
 
     class Config:
         orm_mode = True
-            
     

@@ -28,5 +28,14 @@ CREATE TABLE IF NOT EXISTS "Models"(
   model_file BLOB,
   FOREIGN KEY (dataset_id) REFERENCES Datasets (id)
   );
+CREATE TABLE IF NOT EXISTS "Compiled_models"(
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  created TEXT,
+  model_id INTEGER,
+  compiler_id INTEGER,
+  model_file BLOB,
+  FOREIGN KEY (model_id) REFERENCES Models (id),
+  FOREIGN KEY (compiler_id) REFERENCES Compilers (id)
+);
 
 
