@@ -46,6 +46,5 @@ def get_dataset_path_by_id(database: Session, id: int):
     dataset for tensorflow training
     """
 
-    result = database.query(models.Dataset).filter(models.Dataset.id == id)
-
+    result = database.query(models.Dataset).filter(models.Dataset.id == id).one()
     return result.path

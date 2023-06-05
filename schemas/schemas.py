@@ -147,4 +147,4 @@ class LossFunctions(str, Enum):
     """
 
     categorical_crossentropy = "Categorical crossentropy"
-    parse_categorical_crossentropy = "parse Categorical crossentropy"
+    parse_categorical_crossentropy = "Sparse Categorical crossentropy"
