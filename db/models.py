@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String#, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, String, DateTime, LargeBinary, ForeignKey
 #from sqlalchemy.orm import relationship
 
 from db.database import Base
@@ -18,6 +18,15 @@ class Device(Base):
     model = Column(String)
     description = Column(String)
     serial = Column(String)
+
+
+class Compiler(Base):
+    """MCU Compiler
+    """
+    __tablename__ = "Compilers"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String)
 
 
 class Bridge(Base):
@@ -42,4 +51,31 @@ class Dataset(Base):
     path = Column(Integer)
     name = Column(Integer)
     description = Column(Integer)
-    
+
+
+class Model(Base):
+    """Tensorflow model trained on a specified dataset. 
+    Model file is saved as pickle in database.
+    """
+    __tablename__ = "Models"
+
+    id = Column(Integer, primary_key=True, index=True)
+    created = Column(DateTime)
+    dataset_id = Column(Integer, ForeignKey("Datasets.id"))
+    parameters = Column(String)
+    description = Column(String)
+    model_file = Column(LargeBinary)
+
+
+class CompiledModel(Base):
+    """Model compiled with TFLite to fit a MCU.
+    Model file is saved in database.
+    """
+
+    __tablename__ = "Compiled_models"
+
+    id = Column(Integer, primary_key=True, index=True)
+    created = Column(DateTime)
+    model_id = Column(Integer, ForeignKey("Models.id"))
+    compiler_id = Column(Integer, ForeignKey(("Compilers.id")))
+    model_file = Column(LargeBinary)
