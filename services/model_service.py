@@ -1,13 +1,14 @@
 import os
+from sqlalchemy.orm import Session
 from TinyMLaaS_main.training import TrainModel
-from services import data_service
+from services import dataset_service
 
 
-def call_training(ds_id, training_data, lossfunc):
+def call_training(ds_id, training_data, lossfunc, database: Session):
     """Initalize the training class for model training and train it with the
     wanted data"""
 
-    dataset_path = data_service.get_dataset_images(ds_id)
+    dataset_path = dataset_service.get_dataset_images(database, ds_id)
     trainmodel = TrainModel(dataset_path)
     model, history, epochs_range = trainmodel.train(
         training_data.img_height, training_data.img_width,

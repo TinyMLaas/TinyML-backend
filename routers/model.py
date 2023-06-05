@@ -1,7 +1,9 @@
 from enum import Enum
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
 from pydantic import BaseModel
-from services import training_service
+from services import model_service
+from db.database import get_db
 
 router = APIRouter()
 
@@ -23,7 +25,8 @@ class TrainingData(BaseModel):
 
 @router.post("/model/dataset/{dataset_id}", status_code=201)
 async def train_model(dataset_id: int,
-                      trainingdata: TrainingData, lossfunc: LossFunctions):
+                      trainingdata: TrainingData, lossfunc: LossFunctions,
+                      database: Session = Depends(get_db)):
     """return training data"""
 
-    return training_service.training(dataset_id, trainingdata, lossfunc)
+    return training_service.training(dataset_id, trainingdata, lossfunc, database)
