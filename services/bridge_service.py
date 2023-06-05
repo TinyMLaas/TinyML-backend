@@ -1,4 +1,3 @@
-from ipaddress import IPv4Address
 from sqlalchemy.orm import Session
 from schemas import schemas
 from db import models
@@ -38,18 +37,3 @@ def add_bridge(database: Session, bridge: schemas.BridgeCreate):
     database.refresh(db_bridge)
 
     return db_bridge
-
-
-def add_device(database: Session, device: schemas.DeviceCreate):
-    """Add a new device to the software
-
-    Args:
-        device: the device to be added
-    """
-
-    db_device = models.Device(**device.dict())
-    database.add(db_device)
-    database.commit()
-    database.refresh(db_device)
-
-    return db_device
