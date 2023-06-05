@@ -1,4 +1,5 @@
 # TinyML-backend
+![GitHub Actions](https://github.com/TinyMLaas/TinyML-backend/actions/workflows/backend_tests.yml/badge.svg)
 
 backend for [TinyMLaaS](https://github.com/JeHugawa/TinyMLaaS-main/).
 
@@ -20,7 +21,7 @@ uvicorn main:app --reload
 
 ## Dependencies
 
-In requirements.txt. Install them with pip install requirements.txt
+In requirements.txt. Install them with pip install -r requirements.txt
 
 ## Testing
 

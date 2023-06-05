@@ -3,14 +3,7 @@ from services import data_service
 
 router = APIRouter()
 
-
-@router.get("/dataset_names")
-async def get_dataset_names():
-    """Displays existing datasets"""
-    return data_service.get_dataset_names()
-
-
-@router.get("/dataset_names_size")
+@router.get("/data/")
 async def get_dataset_names_size():
     """Select a dataset"""
     return data_service.get_dataset_names_size()

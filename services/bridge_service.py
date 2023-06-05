@@ -1,43 +1,39 @@
-import os
-import csv
-import json
-import pandas as pd
-from ipaddress import IPv4Address
-from pydantic import BaseModel
+from sqlalchemy.orm import Session
+from schemas import schemas
+from db import models
 
 
-class Bridge(BaseModel):
-    ip_address: IPv4Address
-    name: str | None = None
+def get_all_bridges(database: Session):
+    """Returns a list of all bridges in the database
+    """
+
+    result = database.query(models.Bridge).all()
+    return result
 
 
-def get_max_id():
-    df = pd.read_csv(os.environ["BRIDGE_FILENAME"])
-    if df.empty:
-        return 1
-    return df["id"].astype(int).max() + 1
+def remove_bridge(database: Session, bridge_id: int):
+    """Removes Bridge from database if it is there.
+    """
+
+    bridge = database.query(models.Bridge).filter(models.Bridge.id == bridge_id).first()
+
+    if bridge is None:
+        raise KeyError()
+
+    database.delete(bridge)
+    database.commit()
 
 
-def add_bridge(bridge: Bridge):
-    bridge.ip_address = str(bridge.ip_address)
-    if bridge.name is None:
-        bridge.name = bridge.ip_address
-    id = get_max_id()
-    row = f"\n{id},{bridge.ip_address},{bridge.name}"
-    with open(os.environ["BRIDGE_FILENAME"], 'a', encoding="utf-8") as csv:
-        csv.write(row)
+def add_bridge(database: Session, bridge: schemas.BridgeCreate):
+    """Add a new Bridge to the software
 
+    Args:
+        bridge: the Bridge to be added
+    """
 
-def get_registered_bridges():
-    """Reads devices from a local csv file."""
-    json_array = []
+    db_bridge = models.Bridge(ip_address=str(bridge.ip_address), name=bridge.name)
+    database.add(db_bridge)
+    database.commit()
+    database.refresh(db_bridge)
 
-    with open(os.environ["BRIDGE_FILENAME"], "r", encoding="utf-8") as csv_file:
-        csvReader = csv.DictReader(csv_file)
-
-        for row in csvReader:
-            json_array.append(row)
-
-    json_string = json.dumps(json_array)
-
-    return json_string
+    return db_bridge
