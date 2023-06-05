@@ -76,6 +76,6 @@ class CompiledModel(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     created = Column(DateTime)
-    model_id = Column(Integer) # foreign key
-    compiler_id = Column(Integer) # foreign key
+    model_id = Column(Integer, ForeignKey("Models.id"))
+    compiler_id = Column(Integer, ForeignKey(("Compilers.id")))
     model_file = Column(LargeBinary)
