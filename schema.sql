@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS "Models"(
   dataset_id INTEGER,
   parameters TEXT,
   description TEXT,
-  model_file BLOB,
+  model_path TEXT,
   FOREIGN KEY (dataset_id) REFERENCES Datasets (id)
   );
 CREATE TABLE IF NOT EXISTS "Compiled_models"(

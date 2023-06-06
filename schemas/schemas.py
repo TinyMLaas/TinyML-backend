@@ -101,7 +101,7 @@ class Model(ModelBase):
     """
     id: int
     created: datetime.datetime | None
-    # model_file: bytes
+    model_path: str
 
     class Config:
         orm_mode = True
