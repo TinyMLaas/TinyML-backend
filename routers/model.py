@@ -7,7 +7,7 @@ from schemas.schemas import TrainingData, LossFunctions
 router = APIRouter()
 
 
-@router.post("/model/dataset/{dataset_id}", status_code=201)
+@router.post("/models/datasets/{dataset_id}", status_code=201)
 async def train_model(dataset_id: int,
                       trainingdata: TrainingData, lossfunc: LossFunctions,
                       database: Session = Depends(get_db)):

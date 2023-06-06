@@ -19,6 +19,10 @@ def training(ds_id, training_data, lossfunc, database: Session):
     image, prediction = trainmodel.prediction(model, class_names)
     stats = trainmodel.plot_statistics(history, epochs_range)
     savemodel(model, training_data.model_name)
+    
+    
+    save_model_to_file(model)
+    
     #result = {"image": image, "prediction": prediction, "stats": stats}
     result = {"status": "done"}
     return result
@@ -28,3 +32,7 @@ def savemodel(model, modelname):
 
     """Saves model to a database"""
     pass
+
+def save_model_to_file(model):
+    path = "./trained_model/"
+    model.save(path)
