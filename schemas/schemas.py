@@ -4,7 +4,6 @@ from ipaddress import IPv4Address
 from pydantic import BaseModel, Field
 
 
-
 # Devices
 class DeviceBase(BaseModel):
     """Base for Device model. Lacks id as it is assigned by database.
@@ -35,6 +34,8 @@ class DeviceCreate(DeviceBase):
         orm_mode = True
 
 # Bridges
+
+
 class BridgeBase(BaseModel):
     """Base for Bridge model. Lacks id as it is assigned by database.
     """
@@ -128,8 +129,8 @@ class CompiledModelBase(BaseModel):
     """"A Model that has been compiled with TFLite to fit a MCU.
     """
     created: datetime.datetime | None
-    compiler_id: int # relationship
-    model_id: int # relationship
+    compiler_id: int  # relationship
+    model_id: int  # relationship
     model_file: bytes
 
 
@@ -148,7 +149,8 @@ class CompiledModelCreate(CompiledModelBase):
 
     class Config:
         orm_mode = True
-    
+
+
 class TrainingData(BaseModel):
     """The request body for the model training"""
 
@@ -165,3 +167,10 @@ class LossFunctions(str, Enum):
 
     categorical_crossentropy = "Categorical crossentropy"
     parse_categorical_crossentropy = "Sparse Categorical crossentropy"
+
+
+class Models(BaseModel):
+    """Return model"""
+
+    status: str
+    image: str
