@@ -52,4 +52,8 @@ def training(training_data, lossfunc, database: Session, dataset_id: int = None)
 
 def savemodel(model, modelname):
     """Saves model to a database"""
-    pass
+    stats = trainmodel.plot_statistics(history, epochs_range)
+    savemodel(training_data.model_name)
+    #result = {"image": image, "prediction": prediction, "stats": stats}
+    result = {"status": "done"}
+    return result
