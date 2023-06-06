@@ -91,17 +91,17 @@ class DatasetCreate(BaseModel):
 class ModelBase(BaseModel):
     """Base for Model trained on Tensorflow. Lacks id as it is assigned by database
     """
-    created: datetime.datetime | None
-    dataset_id: int
+    dataset_id: int | None
     parameters: dict
     description: str
-    model_file: bytes
 
 
 class Model(ModelBase):
     """If Model is in database, it always has an id.
     """
     id: int
+    created: datetime.datetime | None
+    # model_file: bytes
 
     class Config:
         orm_mode = True
@@ -124,7 +124,14 @@ class ModelPlot(ModelBase):
         orm_mode = True
 
 
+class ModelTrained(Model):
+    prediction_image: str
+    prediction: str
+    statistic_image: bytes
+
 # Compiled models
+
+
 class CompiledModelBase(BaseModel):
     """"A Model that has been compiled with TFLite to fit a MCU.
     """
@@ -167,10 +174,3 @@ class LossFunctions(str, Enum):
 
     categorical_crossentropy = "Categorical crossentropy"
     parse_categorical_crossentropy = "Sparse Categorical crossentropy"
-
-
-class Models(BaseModel):
-    """Return model"""
-
-    status: str
-    image: str
