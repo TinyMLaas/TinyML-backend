@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, DateTime, LargeBinary, ForeignKey
-#from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship
 
 from db.database import Base
 
@@ -52,6 +52,7 @@ class Dataset(Base):
     name = Column(Integer)
     description = Column(Integer)
 
+    model = relationship("Model", back_populates="dataset")
 
 class Model(Base):
     """Tensorflow model trained on a specified dataset. 
@@ -65,6 +66,8 @@ class Model(Base):
     parameters = Column(String)
     description = Column(String)
     model_file = Column(LargeBinary)
+    
+    dataset = relationship("Dataset", back_populates="model")
 
 
 class CompiledModel(Base):
