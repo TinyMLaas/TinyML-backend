@@ -12,10 +12,10 @@ httpcore==0.17.1
 httpx==0.24.1
 idna==3.4
 iniconfig==2.0.0
+numpy
 isort==5.12.0
 lazy-object-proxy==1.9.0
 mccabe==0.7.0
-numpy==1.24.3
 packaging==23.1
 pandas==2.0.1
 platformdirs==3.5.1
@@ -37,4 +37,7 @@ typing_extensions==4.5.0
 tzdata==2023.3
 urllib3==2.0.2
 uvicorn==0.22.0
+matplotlib
+opencv-python
+tensorflow
 wrapt==1.15.0

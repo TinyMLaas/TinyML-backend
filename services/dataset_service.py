@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from schemas import schemas
 from db import models
 
+
 def get_directory_size(path):
     """Returns the size of a directory containing subdirectories in megabytes.
     """
@@ -38,3 +39,12 @@ def get_datasets(database: Session):
         response.append(dataset)
 
     return response
+
+
+def get_dataset_path_by_id(database: Session, id: int):
+    """Returns a dataset based on id. Used for getting wanted
+    dataset for tensorflow training
+    """
+
+    result = database.query(models.Dataset).filter(models.Dataset.id == id).one()
+    return result.path

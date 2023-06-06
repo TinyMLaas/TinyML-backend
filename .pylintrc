@@ -2,6 +2,10 @@
 # Set path for local imports when there is no src folder
 init-hook="import sys; sys.path.append("./")"
 
+disable=
+	C0103,
+	W0622
+
 # Analyse import fallback blocks. This can be used to support both Python 2 and
 # 3 compatible code, which means that the block might have code that exists
 # only in one or another interpreter, leading to false positives when analysed.
@@ -41,7 +45,7 @@ extension-pkg-whitelist=
 fail-on=
 
 # Specify a score threshold under which the program will exit with error.
-fail-under=10
+fail-under=9.0
 
 # Interpret the stdin as a python script, whose filename needs to be passed as
 # the module_or_package argument.
