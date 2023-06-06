@@ -21,7 +21,7 @@ def training(ds_id, training_data, lossfunc, database: Session):
     savemodel(model, training_data.model_name)
     #result = {"image": image, "prediction": prediction, "stats": stats}
     result = {"status": "done"}
-    return resul
+    return result
 
 
 def savemodel(model, modelname):
