@@ -16,7 +16,8 @@ def training(ds_id, training_data, lossfunc, database: Session):
     trainmodel = TrainModel(dataset_path)
     model, history, epochs_range = trainmodel.train(
         training_data.img_height, training_data.img_width,
-        training_data.epochs, lossfunc, training_data.batch_size
+        training_data.epochs, lossfunc, training_data.batch_size,
+        training_data.model_name
     )
 
     class_names = [name for name in os.listdir(
@@ -36,4 +37,8 @@ def training(ds_id, training_data, lossfunc, database: Session):
 
 def savemodel(model, modelname):
     """Saves model to a database"""
-    pass
+    stats = trainmodel.plot_statistics(history, epochs_range)
+    savemodel(training_data.model_name)
+    #result = {"image": image, "prediction": prediction, "stats": stats}
+    result = {"status": "done"}
+    return result
