@@ -160,19 +160,9 @@ class CompiledModelCreate(CompiledModelBase):
         orm_mode = True
 
 
-class TrainingData(BaseModel):
-    """The request body for the model training"""
-
-    model_name: str
-    epochs: int
-    img_width: int
-    img_height: int
-    batch_size: int
-
-
 class LossFunctions(str, Enum):
     """Loss functions available in training
     """
 
     categorical_crossentropy = "Categorical crossentropy"
-    parse_categorical_crossentropy = "Sparse Categorical crossentropy"
+    sparse_categorical_crossentropy = "Sparse Categorical crossentropy"
