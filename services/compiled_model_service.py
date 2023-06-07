@@ -24,12 +24,8 @@ def compile_model(database: Session):
 
 from db import models
 
-<<<<<<< HEAD
-compile_model(None)
-=======
 def get_all_compiled_models(database: Session):
     """Returns a list of all compiled models in the database
     """
     result = database.query(models.CompiledModel).all()
     return result
->>>>>>> 68e81bbef7ba851f2ef44fe4e28bbb0f52b828d4
