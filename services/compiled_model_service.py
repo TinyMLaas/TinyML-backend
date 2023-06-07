@@ -36,10 +36,10 @@ def compile_model(database: Session, model_id: int):
     compiled_model = convert_model(dataset_path=dataset_path, model_path=model_path, model_params=model_params)
 
 
+    compiled_model = convert_model(dataset_path=dataset_path, model_path=model_path)
+
 def get_all_compiled_models(database: Session):
     """Returns a list of all compiled models in the database
     """
     result = database.query(models.CompiledModel).all()
     return result
-
-#compile_model(database = Session(Depends(get_db)))

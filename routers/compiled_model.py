@@ -16,9 +16,9 @@ async def compile_model(database: Session = Depends(get_db)):
     
     return response
 
-@router.get("/compiled_models/models/", status_code=200, response_model=list[schemas.CompiledModel])
-async def list_registered_devices(database: Session = Depends(get_db)):
+@router.get("/compiled_models/models/", status_code=200, response_model=list[schemas.CompiledModels])
+async def get_compiled_models(database: Session = Depends(get_db)):
     """Displays registered devices"""
-    response = device_service.get_all_devices(database)
+    response = compiled_model_service.get_all_compiled_models(database)
 
     return response
