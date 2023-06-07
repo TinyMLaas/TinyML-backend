@@ -102,6 +102,8 @@ class Model(ModelBase):
 class ModelCreate(ModelBase):
     """When creating a new Model, there is yet no id.
     """
+    created: datetime.datetime | None
+    model_path: str
 
     class Config:
         orm_mode = True
