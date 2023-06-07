@@ -1,6 +1,7 @@
 import os
 from datetime import datetime
 import base64
+import json
 from sqlalchemy.orm import Session
 from fastapi.encoders import jsonable_encoder
 from TinyMLaaS_main.training import TrainModel
@@ -81,3 +82,14 @@ def savemodel(model: schemas.ModelCreate, database: Session):
     database.refresh(db_model)
 
     return db_model
+
+
+def get_models(database: Session):
+    """Get all models from database
+    """
+
+    result = database.query(models.Model).all()
+
+    for model in result:
+        model.parameters = json.loads(model.parameters.replace("'", '"'))
+    return result

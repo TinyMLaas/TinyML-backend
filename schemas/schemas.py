@@ -115,13 +115,13 @@ class ModelCreate(ModelBase):
 
     class Config:
         orm_mode = True
-        
+
 
 class ModelPlot(ModelBase):
     """"Includes image of model training plots.
     """
     training_plot: bytes
-    
+
     class Config:
         orm_mode = True
 
