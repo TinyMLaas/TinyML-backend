@@ -41,7 +41,7 @@ def training(training_data, lossfunc, database: Session, dataset_id: int = None)
     model, history, epochs_range = trainmodel.train(
         parameters["img_height"], parameters["img_width"],
         parameters["epochs"], lossfunc, parameters["batch_size"],
-        str(training_data.description)
+        db_model["id"]
     )
 
     db_model["parameters"] = parameters
