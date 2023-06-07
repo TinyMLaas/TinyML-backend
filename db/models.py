@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, DateTime, LargeBinary, ForeignKey
 from sqlalchemy.orm import relationship
 
+
 from db.database import Base
 
 
@@ -14,7 +15,7 @@ class Device(Base):
     name = Column(String)
     connection = Column(String)
     installer = Column(String)
-    compiler = Column(String) #foreign key
+    compiler = Column(String)  # foreign key
     model = Column(String)
     description = Column(String)
     serial = Column(String)
@@ -57,6 +58,9 @@ class Dataset(Base):
 class Model(Base):
     """Tensorflow model trained on a specified dataset. 
     Model file is saved as pickle in database.
+
+    Parameters are divided by a slash(/) and they are in order
+    epochs/img_width/img_height/batch_size
     """
     __tablename__ = "Models"
 
@@ -65,7 +69,7 @@ class Model(Base):
     dataset_id = Column(Integer, ForeignKey("Datasets.id"))
     parameters = Column(String)
     description = Column(String)
-    model_file = Column(LargeBinary)
+    model_path = Column(String)
     
     dataset = relationship("Dataset", back_populates="model")
 

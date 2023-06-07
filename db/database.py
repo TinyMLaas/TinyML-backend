@@ -41,4 +41,5 @@ def get_db():
     finally:
         database.close()
 
+
 Base = declarative_base()
