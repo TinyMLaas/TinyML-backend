@@ -76,7 +76,7 @@ def savemodel(model: schemas.ModelCreate, database: Session):
     database.commit()
     database.refresh(db_model)
 
-    db_model.model_path = f"models/{db_model.id}"
+    db_model.model_path = f"tensorflow_models/{db_model.id}"
     database.commit()
     database.refresh(db_model)
 
