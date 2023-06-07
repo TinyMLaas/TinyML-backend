@@ -4,7 +4,6 @@ from ipaddress import IPv4Address
 from pydantic import BaseModel, Field
 
 
-
 # Devices
 class DeviceBase(BaseModel):
     """Base for Device model. Lacks id as it is assigned by database.
@@ -35,6 +34,8 @@ class DeviceCreate(DeviceBase):
         orm_mode = True
 
 # Bridges
+
+
 class BridgeBase(BaseModel):
     """Base for Bridge model. Lacks id as it is assigned by database.
     """
@@ -82,17 +83,17 @@ class Dataset(DatasetBase):
 class ModelBase(BaseModel):
     """Base for Model trained on Tensorflow. Lacks id as it is assigned by database
     """
-    created: datetime.datetime | None
-    dataset_id: int
+    dataset_id: int | None
     parameters: dict
     description: str
-    model_file: bytes
 
 
 class Model(ModelBase):
     """If Model is in database, it always has an id.
     """
     id: int
+    created: datetime.datetime | None
+    # model_file: bytes
 
     class Config:
         orm_mode = True
@@ -115,13 +116,20 @@ class ModelPlot(ModelBase):
         orm_mode = True
 
 
+class ModelTrained(Model):
+    prediction_image: str
+    prediction: str
+    statistic_image: bytes
+
 # Compiled models
+
+
 class CompiledModelBase(BaseModel):
     """"A Model that has been compiled with TFLite to fit a MCU.
     """
     created: datetime.datetime | None
-    compiler_id: int # relationship
-    model_id: int # relationship
+    compiler_id: int  # relationship
+    model_id: int  # relationship
     model_file: bytes
 
 
@@ -140,7 +148,8 @@ class CompiledModelCreate(CompiledModelBase):
 
     class Config:
         orm_mode = True
-    
+
+
 class TrainingData(BaseModel):
     """The request body for the model training"""
 
