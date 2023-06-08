@@ -9,10 +9,10 @@ router = APIRouter()
 
 
 @router.post("/compiled_models/models/{model_id}", status_code=201, response_model=schemas.CompiledModel)
-async def compile_model(database: Session = Depends(get_db)):
+async def compile_model(model_id, database: Session = Depends(get_db)):
     """return training data"""
 
-    response = compiled_model_service.compile_model(database, model_id=7) # dev mode
+    response = compiled_model_service.compile_model(database, model_id) # dev mode
     
     return response
 
