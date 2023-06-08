@@ -15,7 +15,8 @@ def remove_device(database: Session, device_id: int):
     """Removes device from database if it is there.
     """
 
-    device = database.query(models.Device).filter(models.Device.id == device_id).first()
+    device = database.query(models.Device).filter(
+        models.Device.id == device_id).first()
 
     if device is None:
         raise KeyError()
