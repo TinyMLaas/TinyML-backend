@@ -33,7 +33,7 @@ def setup_database():
     model_populate = """INSERT INTO
                       Models(created, dataset_id, parameters, description, model_path)
                       VALUES
-                      ('2011-11-04T00:05:23Z', '2',
+                      ('2011-11-04', '2',
                       '{"epochs": 1, "img_width": 96, "img_height": 96, "batch_size": 1}',
                       'test_value','tensorflow_models/1')"""
 
