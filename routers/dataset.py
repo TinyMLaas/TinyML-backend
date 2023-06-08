@@ -13,3 +13,8 @@ async def get_datasets(database: Session=Depends(get_db)):
     """Displays existing datasets"""
     response = dataset_service.get_datasets(database)
     return response
+
+@router.post("/datasets/", status_code=201)
+async def add_dataset(dataset_name, dataset_desc, database: Session=Depends(get_db)):
+    """return response"""
+    return dataset_service.add_dataset(dataset_name, dataset_desc, database)
