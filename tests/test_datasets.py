@@ -36,7 +36,7 @@ def teardown_database():
     if os.path.exists("test_database.db") & cleanup:
         os.remove("test_database.db")
 
-class GetAllBridges(unittest.TestCase):
+class GetAllDatasets(unittest.TestCase):
     @classmethod
     def setup_class(self):        
         setup_database()
@@ -70,6 +70,12 @@ class AddNewDataset(unittest.TestCase):
         )
         
         assert response.status_code == 201
+
+        check_added = self.client.get(
+            "/datasets/"
+        )
+        self.assertIn("test", check_added.text) 
+        
 
 
     @classmethod  

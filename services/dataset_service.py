@@ -3,6 +3,7 @@ import os
 from sqlalchemy.orm import Session
 from schemas import schemas
 from db import models
+from config import DATASET_DIR
 
 
 def get_directory_size(path):
@@ -58,7 +59,7 @@ def add_dataset(dataset_name, dataset_desc,database: Session):
     database.add(db_dataset)
     database.commit()
     database.refresh(db_dataset)
-    db_dataset.path = f"data/{db_dataset.id}/"
-    os.mkdir(db_dataset.path)
+    db_dataset.path = f"{DATASET_DIR}{db_dataset.id}/"
+    os.makedirs(db_dataset.path, exist_ok=True)
     database.commit()
     return db_dataset
