@@ -8,6 +8,7 @@ from TinyMLaaS_main.training import TrainModel
 from services import dataset_service
 from db import models
 from schemas import schemas
+from config import MODEL_DIR
 
 
 def training(training_data, lossfunc, database: Session, dataset_id: int = None):
@@ -39,10 +40,12 @@ def training(training_data, lossfunc, database: Session, dataset_id: int = None)
 
     db_model = db_model.__dict__
 
+    model_path = MODEL_DIR + str(db_model["id"])
+
     model, history, epochs_range = trainmodel.train(
         parameters["img_height"], parameters["img_width"],
         parameters["epochs"], lossfunc, parameters["batch_size"],
-        db_model["id"]
+        model_path
     )
 
     db_model["parameters"] = parameters
