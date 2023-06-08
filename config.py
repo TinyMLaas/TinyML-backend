@@ -10,3 +10,4 @@ except FileNotFoundError:
 
 os.environ["DATABASE_URL"] = os.getenv("DATABASE_URL")
 DATASET_DIR = os.getenv("DATASET_DIR")
+MODEL_DIR = os.getenv("MODEL_DIR") or "tensorflow_models/"
