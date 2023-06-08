@@ -78,6 +78,14 @@ class Dataset(DatasetBase):
         orm_mode = True
 
 
+class DatasetCreate(BaseModel):
+    """When creating a new Dataset, there is yet no id. There is also no size to save.
+    """
+    path: str = Field(min_length=1)
+    name: str = Field(min_length=1)
+    description: str = Field(min_length=1)
+
+
 # Models
 class ModelBase(BaseModel):
     """Base for Model trained on Tensorflow. Lacks id as it is assigned by database

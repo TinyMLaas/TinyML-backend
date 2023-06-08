@@ -45,6 +45,20 @@ def get_dataset_path_by_id(database: Session, id: int):
     """Returns a dataset based on id. Used for getting wanted
     dataset for tensorflow training
     """
-
     result = database.query(models.Dataset).filter(models.Dataset.id == id).one()
     return result.path
+
+
+def add_dataset(dataset_name, dataset_desc,database: Session):
+    dataset = schemas.DatasetCreate(
+        name=dataset_name,
+        path="nopath",
+        description=dataset_desc)
+    db_dataset = models.Dataset(**dataset.dict())
+    database.add(db_dataset)
+    database.commit()
+    database.refresh(db_dataset)
+    db_dataset.path = f"data/{db_dataset.id}/"
+    os.mkdir(db_dataset.path)
+    database.commit()
+    return db_dataset
