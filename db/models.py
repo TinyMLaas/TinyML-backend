@@ -68,13 +68,9 @@ class Model(Base):
     dataset_id = Column(Integer, ForeignKey("Datasets.id"))
     parameters = Column(String)
     description = Column(String)
-<<<<<<< HEAD
-    model_file = Column(LargeBinary)
+    model_path = Column(String)
     
     dataset = relationship("Dataset", back_populates="model")
-=======
-    model_path = Column(String)
->>>>>>> b36c81c (Save models to database)
 
 
 class CompiledModel(Base):
