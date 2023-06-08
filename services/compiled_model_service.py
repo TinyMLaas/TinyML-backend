@@ -1,14 +1,10 @@
-#dev mode
-#from pathlib import Path
-#import sys
-#path_root = Path(__file__).parents[1]
-#sys.path.append(str(path_root))
 import json
 from datetime import datetime
 from sqlalchemy.orm import Session
-from TinyMLaaS_main.compiling import convert_model, convert_to_c_array, convert_model_to_cc
+from TinyMLaaS_main.compiling import convert_model#, convert_to_c_array, convert_model_to_cc
 from db import models
 from schemas import schemas
+from config import COMPILED_MODEL_DIR
 
 
 def compile_model(database: Session, model_id: int):
@@ -22,7 +18,7 @@ def compile_model(database: Session, model_id: int):
     model_params = json.loads(model.parameters.replace("'", '"'))
 
     now = datetime.now()
-    
+
     # Ensin tallennetaan tietokantaan
     db_model = schemas.CompiledModelCreate(
         created=now,
@@ -35,6 +31,7 @@ def compile_model(database: Session, model_id: int):
 
     convert_model(
         dataset_path=dataset_path,
+        output_path=COMPILED_MODEL_DIR,
         model_path=model_path,
         model_params=model_params,
         model_name=str(db_model.id)
@@ -46,7 +43,7 @@ def compile_model(database: Session, model_id: int):
 def get_all_compiled_models(database: Session):
     """Returns a list of all compiled models in the database
     """
-    
+
     result = database.query(models.CompiledModel).all()
     return result
 
@@ -58,10 +55,10 @@ def save_compiled_model(compiled_model: schemas.ModelCreate, database: Session):
     database.add(db_model)
     database.commit()
     database.refresh(db_model)
-    
-    db_model.model_path = f"compiled_models/{db_model.id}"
+
+    db_model.model_path = f"{COMPILED_MODEL_DIR}{db_model.id}"
     database.commit()
     database.refresh(db_model)
-    
+
     return db_model
     

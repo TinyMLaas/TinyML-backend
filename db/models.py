@@ -71,7 +71,7 @@ class Model(Base):
     parameters = Column(String)
     description = Column(String)
     model_path = Column(String)
-    
+
     dataset = relationship("Dataset", back_populates="model")
     compiled_model = relationship("CompiledModel", back_populates="model")
 
@@ -88,5 +88,5 @@ class CompiledModel(Base):
     model_id = Column(Integer, ForeignKey("Models.id"))
     compiler_id = Column(Integer, ForeignKey(("Compilers.id")))
     model_path = Column(String)
-    
+
     model = relationship("Model", back_populates="compiled_model")
