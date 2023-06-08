@@ -7,7 +7,7 @@ from schemas import schemas
 router = APIRouter()
 
 
-@router.post("/model/dataset/{dataset_id}", status_code=201, response_model=schemas.ModelTrained)
+@router.post("/models/datasets/{dataset_id}", status_code=201, response_model=schemas.ModelTrained)
 async def train_model(dataset_id: int | None, trainingdata: schemas.ModelBase, lossfunc: schemas.LossFunctions,
                       database: Session = Depends(get_db)):
     """return training data"""
@@ -15,7 +15,7 @@ async def train_model(dataset_id: int | None, trainingdata: schemas.ModelBase, l
     return model_service.training(trainingdata, lossfunc, database, dataset_id)
 
 
-@router.post("/model/dataset/", status_code=201, response_model=schemas.ModelTrained)
+@router.post("/models/datasets/", status_code=201, response_model=schemas.ModelTrained)
 async def train_model_dataset_id_in_training_data(trainingdata: schemas.ModelBase, lossfunc: schemas.LossFunctions,
                                                   database: Session = Depends(get_db)):
     """return training data"""
