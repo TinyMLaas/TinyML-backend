@@ -57,5 +57,25 @@ class GetAllBridges(unittest.TestCase):
         teardown_database()
 
 
+class AddNewDataset(unittest.TestCase):
+    @classmethod
+    def setup_class(self):        
+        setup_database()
+        self.client = TestClient(app)
+
+
+    def test_adding_new_dataset(self):
+        response = self.client.post(
+            "/datasets/?dataset_name=test&dataset_desc=this%20is%20a%20test%20dataset"
+        )
+        
+        assert response.status_code == 201
+
+
+    @classmethod  
+    def teardown_class(self):
+        teardown_database()
+
+
 if __name__ == '__main__':
     unittest.main()
