@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS "Compiled_models"(
   created TEXT,
   model_id INTEGER,
   compiler_id INTEGER,
-  model_file BLOB,
+  model_path TEXT,
   FOREIGN KEY (model_id) REFERENCES Models (id),
   FOREIGN KEY (compiler_id) REFERENCES Compilers (id)
 );
