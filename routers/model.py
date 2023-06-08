@@ -21,3 +21,12 @@ async def train_model_dataset_id_in_training_data(trainingdata: schemas.ModelBas
     """return training data"""
 
     return model_service.training(trainingdata, lossfunc, database)
+
+
+@router.get("/models/", status_code=200, response_model=list[schemas.Model])
+async def get_all_models(database: Session = Depends(get_db)):
+    """Return all models
+    """
+
+    result = model_service.get_models(database)
+    return result
