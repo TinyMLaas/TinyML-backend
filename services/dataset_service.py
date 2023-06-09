@@ -5,7 +5,6 @@ from schemas import schemas
 from db import models
 from config import DATASET_DIR
 import cv2
-from os import path
 
 
 def get_directory_size(path):
@@ -20,7 +19,7 @@ def get_directory_size(path):
         else:
             total_size += get_directory_size(entry.path)
 
-    return total_size / 1024
+    return total_size
 
 
 def get_datasets(database: Session):
@@ -32,7 +31,7 @@ def get_datasets(database: Session):
     response = []
 
     for item in result:
-        size = f"{get_directory_size(item.path):.1f} MB"
+        size = f"{get_directory_size(item.path)/1048576:.1f} MB"
         dataset = schemas.Dataset(
             id=item.id,
             name=item.name,
@@ -71,8 +70,9 @@ def add_image_to_dataset(dataset_id,files, database: Session):
     #assume all images are valid and no conflicts for now
     
     dataset = database.query(models.Dataset).filter(
-        models.Dataset.id = dataset_id).first()
-
+    models.Dataset.id == dataset_id).first()
+    path = dataset.path
     for image in files:
-        pass
-        #savedir = path.join(DATASET_DIR, 
+        savedir = os.path.join(path,image.filename)
+        with open(savedir, "wb+") as file_object:
+            file_object.write(image.file.read())

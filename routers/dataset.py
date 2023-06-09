@@ -22,5 +22,5 @@ async def add_dataset(dataset_name, dataset_desc, database: Session=Depends(get_
 
 
 @router.post("/datasets/{dataset_id}", status_code=200)
-async def add_image_to_dataset(files: list[UploadFile],database: Session=Depends(get_db)):
-    return dataset_service.add_image_to_dataset(files ,database)
+async def add_image_to_dataset(dataset_id, files: list[UploadFile],database: Session=Depends(get_db)):
+    return dataset_service.add_image_to_dataset(dataset_id,files ,database)
