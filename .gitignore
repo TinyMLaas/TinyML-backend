@@ -7,3 +7,4 @@ tiny_mlaas.db
 TinyMLaaS_main
 models
 tensorflow_models
+compiled_models
