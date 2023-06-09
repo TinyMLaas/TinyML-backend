@@ -2,7 +2,7 @@ from fastapi import FastAPI, Request, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
-from routers import device, bridge, dataset, model
+from routers import compiled_model, device, bridge, dataset, model
 from apidocs import tags, description
 import config  # pylint: disable=unused-import
 
@@ -28,6 +28,8 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 app.include_router(device.router, tags=["Devices"])
 
 app.include_router(bridge.router, tags=["Bridges"])
+
+app.include_router(compiled_model.router, tags=["Compiled models"])
 
 app.include_router(dataset.router, tags=["Datasets"])
 

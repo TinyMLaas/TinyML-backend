@@ -138,9 +138,9 @@ class CompiledModelBase(BaseModel):
     """"A Model that has been compiled with TFLite to fit a MCU.
     """
     created: datetime.datetime | None
-    compiler_id: int  # relationship
+    compiler_id: int | None  # relationship
     model_id: int  # relationship
-    model_file: bytes
+    model_path: str
 
 
 class CompiledModel(CompiledModelBase):

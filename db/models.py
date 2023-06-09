@@ -55,6 +55,7 @@ class Dataset(Base):
 
     model = relationship("Model", back_populates="dataset")
 
+
 class Model(Base):
     """Tensorflow model trained on a specified dataset. 
     Model file is saved as pickle in database.
@@ -70,8 +71,9 @@ class Model(Base):
     parameters = Column(String)
     description = Column(String)
     model_path = Column(String)
-    
+
     dataset = relationship("Dataset", back_populates="model")
+    compiled_model = relationship("CompiledModel", back_populates="model")
 
 
 class CompiledModel(Base):
@@ -85,4 +87,6 @@ class CompiledModel(Base):
     created = Column(DateTime)
     model_id = Column(Integer, ForeignKey("Models.id"))
     compiler_id = Column(Integer, ForeignKey(("Compilers.id")))
-    model_file = Column(LargeBinary)
+    model_path = Column(String)
+
+    model = relationship("Model", back_populates="compiled_model")

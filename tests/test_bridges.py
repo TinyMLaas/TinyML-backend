@@ -4,37 +4,7 @@ import unittest
 from fastapi.testclient import TestClient
 from main import app
 
-
-cleanup = True
-
-def setup_database():
-    #remove excisting test database if there is one
-    teardown_database()
-    
-    # create database file
-    test_db = open("test_database.db", "w")
-    test_db.close()
-
-    # connect to test database
-    con = sqlite3.connect("test_database.db")
-    cur = con.cursor()
-
-    # run sql schema from file
-    with open("schema.sql", "r") as f:
-        schema = f.read()
-
-    # populate database
-    with open("populate.sql") as f:
-        populate = f.read()
-
-    cur.executescript(schema)
-    cur.executescript(populate)
-    con.commit()
-    con.close()
-
-def teardown_database():
-    if os.path.exists("test_database.db") & cleanup:
-        os.remove("test_database.db")
+from tests.setup_tests import setup_database, teardown_database
 
 
 class RemoveBridge(unittest.TestCase):

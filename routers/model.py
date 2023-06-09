@@ -10,7 +10,7 @@ router = APIRouter()
 @router.post("/models/datasets/{dataset_id}", status_code=201, response_model=schemas.ModelTrained)
 async def train_model(dataset_id: int | None, trainingdata: schemas.ModelBase, lossfunc: schemas.LossFunctions,
                       database: Session = Depends(get_db)):
-    """return training data"""
+    """Train a model based on dataset_id"""
 
     return model_service.training(trainingdata, lossfunc, database, dataset_id)
 
@@ -18,15 +18,14 @@ async def train_model(dataset_id: int | None, trainingdata: schemas.ModelBase, l
 @router.post("/models/datasets/", status_code=201, response_model=schemas.ModelTrained)
 async def train_model_dataset_id_in_training_data(trainingdata: schemas.ModelBase, lossfunc: schemas.LossFunctions,
                                                   database: Session = Depends(get_db)):
-    """return training data"""
+    """Train a model"""
 
     return model_service.training(trainingdata, lossfunc, database)
 
 
 @router.get("/models/", status_code=200, response_model=list[schemas.Model])
 async def get_all_models(database: Session = Depends(get_db)):
-    """Return all models
-    """
+    """Return all models"""
 
     result = model_service.get_models(database)
     return result
