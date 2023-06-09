@@ -27,10 +27,10 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 
 app.include_router(device.router, tags=["Devices"])
 
-app.include_router(dataset.router, tags=["Data"])
-
-app.include_router(model.router)
-
 app.include_router(bridge.router, tags=["Bridges"])
 
 app.include_router(compiled_model.router, tags=["Compiled models"])
+
+app.include_router(dataset.router, tags=["Datasets"])
+
+app.include_router(model.router, tags=["Models"])
