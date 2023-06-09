@@ -6,7 +6,7 @@ __pycache__
 tiny_mlaas.db
 TinyMLaaS_main
 trained_model/
-
+models/
 tensorflow_models
 compiled_models
 
