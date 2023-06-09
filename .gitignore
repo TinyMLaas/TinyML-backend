@@ -5,3 +5,7 @@ __pycache__
 .pytest_cache
 tiny_mlaas.db
 TinyMLaaS_main
+trained_model/
+models/
+tensorflow_models
+compiled_models
