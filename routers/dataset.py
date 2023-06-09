@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, UploadFile
 from sqlalchemy.orm import Session
 
 from services import dataset_service
@@ -14,7 +14,13 @@ async def get_datasets(database: Session=Depends(get_db)):
     response = dataset_service.get_datasets(database)
     return response
 
+
 @router.post("/datasets/", status_code=201)
 async def add_dataset(dataset_name, dataset_desc, database: Session=Depends(get_db)):
     """return response"""
     return dataset_service.add_dataset(dataset_name, dataset_desc, database)
+
+
+@router.post("/datasets/{dataset_id}", status_code=200)
+async def add_image_to_dataset(files: list[UploadFile],database: Session=Depends(get_db)):
+    return dataset_service.add_image_to_dataset(files ,database)

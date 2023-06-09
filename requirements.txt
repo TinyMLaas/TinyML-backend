@@ -41,3 +41,4 @@ matplotlib
 opencv-python
 tensorflow
 wrapt
+python-multipart
