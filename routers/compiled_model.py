@@ -14,9 +14,9 @@ router = APIRouter()
     response_model=schemas.CompiledModel
     )
 async def compile_model(model_id, database: Session = Depends(get_db)):
-    """return training data"""
+    """Compile an existing model"""
 
-    response = compiled_model_service.compile_model(database, model_id) # dev mode
+    response = compiled_model_service.compile_model(database, model_id)
 
     return response
 
@@ -27,7 +27,7 @@ async def compile_model(model_id, database: Session = Depends(get_db)):
     response_model=list[schemas.CompiledModel]
     )
 async def get_compiled_models(database: Session = Depends(get_db)):
-    """Displays registered devices"""
+    """Display compiled models"""
     response = compiled_model_service.get_all_compiled_models(database)
 
     return response

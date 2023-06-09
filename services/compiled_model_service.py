@@ -19,7 +19,6 @@ def compile_model(database: Session, model_id: int):
 
     now = datetime.now()
 
-    # Ensin tallennetaan tietokantaan
     db_model = schemas.CompiledModelCreate(
         created=now,
         compiler_id=None,
