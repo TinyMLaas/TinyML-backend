@@ -20,11 +20,6 @@ def session():
         DATABASE_URL, connect_args={"check_same_thread": False}
     )
 
-    # sqlite specific, needs to activate foreign keys
-    with engine.connect() as con:
-        con.execute(text("PRAGMA foreign_keys=ON;"))
-        con.commit()
-
     session_local = sessionmaker(
         autocommit=False,
         autoflush=False,
