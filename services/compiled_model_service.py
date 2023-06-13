@@ -1,4 +1,5 @@
 import json
+import requests
 from datetime import datetime
 from sqlalchemy.orm import Session
 # , convert_to_c_array, convert_model_to_cc
@@ -6,6 +7,7 @@ from TinyMLaaS_main.compiling import convert_model
 from db import models
 from schemas import schemas
 from config import COMPILED_MODEL_DIR
+from services import bridge_service, device_service
 
 
 def compile_model(database: Session, model_id: int):
@@ -72,3 +74,26 @@ def get_compiled_model(compiled_model_id: int, database: Session):
         models.CompiledModel.id == compiled_model_id).one()
     path = result.model_path + "/model.cc"
     return path
+
+
+def install_to_device(compiled_model_id: int, bridge_id: int, device_id: int, database: Session):
+    """Call the wanted bridge to install the wanted compiled model on the wanted device
+    """
+
+    model_path = get_compiled_model(compiled_model_id, database)
+    with open(model_path, "r") as file:
+        cmodel = file.read()
+    bridge_address = bridge_service.get_a_bridge(
+        database, bridge_id).ip_address
+    device = device_service.get_a_device(database, device_id)
+    serial, installer = device.serial, device.installer
+    data = {
+        "device": {
+            "installer": installer,
+            "serial": serial
+        },
+        "model": str(cmodel)
+    }
+    res = requests.post(
+        f'http://{bridge_address}:5000/install/', json=data, timeout=(5, None))
+    return {"status": "some"}

@@ -33,9 +33,16 @@ def add_device(database: Session, device: schemas.DeviceCreate):
     """
 
     db_device = models.Device(**device.dict())
-    print("Service says:", str(db_device))
     database.add(db_device)
     database.commit()
     database.refresh(db_device)
 
     return db_device
+
+
+def get_a_device(database: Session, device_id: int):
+    """Get a spesific device based on device id"""
+
+    device = database.query(models.Device).filter(
+        models.Device.id == device_id).one()
+    return device

@@ -48,3 +48,13 @@ async def get_compiled_model(compiled_model_id, database: Session = Depends(get_
         compiled_model_id, database)
 
     return FileResponse(path, filename="model.cc")
+
+
+@router.get(
+    "/compiled_models/{compiled_model_id}/bridges/{bridge_id}/devices/{device_id}", status_code=200
+)
+async def install_model_to_device_on_brdige(compiled_model_id, bridge_id,
+                                            device_id, database: Session = Depends(get_db)):
+    res = compiled_model_service.install_to_device(
+        compiled_model_id, bridge_id, device_id, database)
+    return res

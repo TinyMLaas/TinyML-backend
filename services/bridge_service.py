@@ -39,3 +39,11 @@ def add_bridge(database: Session, bridge: schemas.BridgeCreate):
     database.refresh(db_bridge)
 
     return db_bridge
+
+
+def get_a_bridge(database: Session, bridge_id: int):
+    """Get a spesific bridge"""
+
+    bridge = database.query(models.Bridge).filter(
+        models.Bridge.id == bridge_id).one()
+    return bridge
