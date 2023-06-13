@@ -15,12 +15,12 @@ async def get_datasets(database: Session=Depends(get_db)):
     return response
 
 
-@router.post("/datasets/", status_code=201)
+@router.post("/datasets/", status_code=201,response_model=schemas.Dataset)
 async def add_dataset(dataset_name, dataset_desc, database: Session=Depends(get_db)):
     """return response"""
     return dataset_service.add_dataset(dataset_name, dataset_desc, database)
 
 
-@router.post("/datasets/{dataset_id}", status_code=200)
+@router.post("/datasets/{dataset_id}/", status_code=200)
 async def add_image_to_dataset(dataset_id, files: list[UploadFile],database: Session=Depends(get_db)):
     return dataset_service.add_image_to_dataset(dataset_id,files ,database)

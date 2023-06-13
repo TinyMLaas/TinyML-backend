@@ -62,13 +62,22 @@ def add_dataset(dataset_name, dataset_desc,database: Session):
     database.refresh(db_dataset)
     db_dataset.path = f"{DATASET_DIR}{db_dataset.id}/"
     os.makedirs(db_dataset.path, exist_ok=True)
+    size = f"{get_directory_size(db_dataset.path)/1048576:.1f} MB "
+    db_dataset.size = size
     database.commit()
+    database.refresh(db_dataset)
     return db_dataset
 
 
 def add_image_to_dataset(dataset_id,files, database: Session):
-    #assume all images are valid and no conflicts for now
-    
+    """ Adds all the images to the datasets folder
+
+    Args:
+        dataset_id: dataset where you will add the files to
+        files: the files to be added to the path
+        database: The db session you need for the path
+
+    """ 
     dataset = database.query(models.Dataset).filter(
     models.Dataset.id == dataset_id).first()
     path = dataset.path
