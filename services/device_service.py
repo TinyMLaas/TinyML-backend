@@ -33,6 +33,7 @@ def add_device(database: Session, device: schemas.DeviceCreate):
     """
 
     db_device = models.Device(**device.dict())
+    print("Service says:", str(db_device))
     database.add(db_device)
     database.commit()
     database.refresh(db_device)

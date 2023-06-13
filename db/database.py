@@ -1,5 +1,5 @@
 import os
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker, declarative_base
 
 
@@ -20,6 +20,11 @@ def session():
         DATABASE_URL, connect_args={"check_same_thread": False}
     )
 
+    # sqlite specific, needs to activate foreign keys
+    with engine.connect() as con:
+        con.execute(text("PRAGMA foreign_keys=ON;"))
+        con.commit()
+
     session_local = sessionmaker(
         autocommit=False,
         autoflush=False,
@@ -36,6 +41,7 @@ def get_db():
         session(): Database session.
     """
     database = session()
+
     try:
         yield database
     finally:

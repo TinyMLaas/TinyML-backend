@@ -25,7 +25,15 @@ class RemoveBridge(unittest.TestCase):
             "/bridges/"
         )
         
-        self.assertNotIn("Parking lot", check_removal.text)  
+        self.assertNotIn("Parking lot", check_removal.text)
+        
+    def test_removing_bridge_removes_associated_devices(self):
+        response = self.client.get(
+            "/devices/"
+        )  
+        
+        self.assertIsNotNone(response.text)
+        assert "707B266C064B14B7" not in response.text
         
                     
     def test_bridge_id_not_found_returns_error_code_400(self):

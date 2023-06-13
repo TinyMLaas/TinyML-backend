@@ -14,11 +14,14 @@ class Device(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
     connection = Column(String)
+    bridge_id = Column(Integer, ForeignKey("Bridges.id"))
     installer = Column(String)
     compiler = Column(String)  # foreign key
     model = Column(String)
     description = Column(String)
     serial = Column(String)
+
+    bridge = relationship("Bridge", back_populates="device")
 
 
 class Compiler(Base):
@@ -39,6 +42,8 @@ class Bridge(Base):
     id = Column(Integer, primary_key=True, index=True)
     ip_address = Column(String)
     name = Column(String)
+
+    device = relationship("Device", back_populates="bridge", cascade="all, delete-orphan")
 
 
 class Dataset(Base):
