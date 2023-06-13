@@ -1,7 +1,8 @@
 import json
 from datetime import datetime
 from sqlalchemy.orm import Session
-from TinyMLaaS_main.compiling import convert_model#, convert_to_c_array, convert_model_to_cc
+# , convert_to_c_array, convert_model_to_cc
+from TinyMLaaS_main.compiling import convert_model
 from db import models
 from schemas import schemas
 from config import COMPILED_MODEL_DIR
@@ -12,7 +13,8 @@ def compile_model(database: Session, model_id: int):
     a Tensorflow Lite model.
     """
 
-    model = database.query(models.Model).filter(models.Model.id == model_id).first()
+    model = database.query(models.Model).filter(
+        models.Model.id == model_id).first()
     dataset_path = model.dataset.path
     model_path = model.model_path
     model_params = json.loads(model.parameters.replace("'", '"'))
@@ -24,7 +26,7 @@ def compile_model(database: Session, model_id: int):
         compiler_id=None,
         model_id=model_id,
         model_path=model_path
-        )
+    )
 
     db_model = save_compiled_model(db_model, database)
 
@@ -34,7 +36,7 @@ def compile_model(database: Session, model_id: int):
         model_path=model_path,
         model_params=model_params,
         model_name=str(db_model.id)
-        )
+    )
 
     return db_model
 
@@ -60,4 +62,13 @@ def save_compiled_model(compiled_model: schemas.ModelCreate, database: Session):
     database.refresh(db_model)
 
     return db_model
-    
+
+
+def get_compiled_model(compiled_model_id: int, database: Session):
+    """Get the compiled model file
+    """
+
+    result = database.query(models.CompiledModel).filter(
+        models.CompiledModel.id == compiled_model_id).one()
+    path = result.model_path + "/model.cc"
+    return path
