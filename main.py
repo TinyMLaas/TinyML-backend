@@ -2,7 +2,7 @@ from fastapi import FastAPI, Request, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
-from routers import compiled_model, device, bridge, dataset, model
+from routers import compiled_model, device, bridge, dataset, model, installer
 from apidocs import tags, description
 import config  # pylint: disable=unused-import
 
@@ -34,3 +34,5 @@ app.include_router(compiled_model.router, tags=["Compiled models"])
 app.include_router(dataset.router, tags=["Datasets"])
 
 app.include_router(model.router, tags=["Models"])
+
+app.include_router(installer.router, tags=["Installers"])
