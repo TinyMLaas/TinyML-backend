@@ -63,8 +63,7 @@ class AddNewDevice(unittest.TestCase):
         self.device_to_add = {
             "name": "Arduino",
             "connection": "192.168.1.10",
-            "installer": "Arduino IDE",
-            "compiler": "TFLiteConverter",
+            "installer_id": "1",
             "model": "Nano 33 BLE",
             "description": "Now we test the adding ***!!!",
             "serial": "1234"

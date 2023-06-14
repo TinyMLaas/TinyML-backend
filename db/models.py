@@ -15,22 +15,25 @@ class Device(Base):
     name = Column(String)
     connection = Column(String)
     bridge_id = Column(Integer, ForeignKey("Bridges.id"))
-    installer = Column(String)
-    compiler = Column(String)  # foreign key
+    installer_id = Column(Integer, ForeignKey("Installers.id"))
     model = Column(String)
     description = Column(String)
     serial = Column(String)
 
     bridge = relationship("Bridge", back_populates="device")
+    installer = relationship("Installer", back_populates="device")
+    
 
 
-class Compiler(Base):
+class Installer(Base):
     """MCU Compiler
     """
-    __tablename__ = "Compilers"
+    __tablename__ = "Installers"
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
+    
+    device = relationship("Device", back_populates="installer", cascade="all, delete-orphan")
 
 
 class Bridge(Base):
@@ -91,7 +94,6 @@ class CompiledModel(Base):
     id = Column(Integer, primary_key=True, index=True)
     created = Column(DateTime)
     model_id = Column(Integer, ForeignKey("Models.id"))
-    compiler_id = Column(Integer, ForeignKey(("Compilers.id")))
     model_path = Column(String)
 
     model = relationship("Model", back_populates="compiled_model")

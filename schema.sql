@@ -3,19 +3,20 @@ CREATE TABLE IF NOT EXISTS "Devices"(
   name TEXT, 
   connection TEXT,
   bridge_id INTEGER, 
-  installer TEXT, 
+  installer_id INTEGER, 
   compiler TEXT, 
   model TEXT, 
   description TEXT, 
   serial TEXT UNIQUE,
   FOREIGN KEY (bridge_id) REFERENCES Bridges (id) ON DELETE CASCADE
+  FOREIGN KEY (installer_id) REFERENCES Installers (id) ON DELETE CASCADE
   );
 CREATE TABLE IF NOT EXISTS "Bridges"(
   id INTEGER PRIMARY KEY AUTOINCREMENT, 
   ip_address TEXT, 
   name TEXT
   );
-CREATE TABLE IF NOT EXISTS "Compilers"(
+CREATE TABLE IF NOT EXISTS "Installers"(
   id INTEGER PRIMARY KEY AUTOINCREMENT, 
   name TEXT
   );

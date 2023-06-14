@@ -2,6 +2,18 @@ import datetime
 from enum import Enum
 from ipaddress import IPv4Address
 from pydantic import BaseModel, Field
+from pydantic.types import Optional
+
+
+class InstallerBase(BaseModel):
+    name: str = Field(min_length=1)
+
+
+class Installer(InstallerBase):
+    id: int
+
+    class Config:
+        orm_mode = True
 
 
 # Devices
@@ -10,17 +22,18 @@ class DeviceBase(BaseModel):
     """
     name: str = Field(min_length=1)
     connection: str | None = Field(default=None, min_length=1)
-    installer: str | None = Field(default=None, min_length=1)
-    compiler: str | None = Field(default=None, min_length=1)
+    installer_id: int 
     model: str = Field(min_length=1)
     description: str = Field(min_length=1)
     serial:  str = Field(min_length=1)
+
 
 
 class Device(DeviceBase):
     """If Device is in database, it always has an id.
     """
     id: int
+    installer: Optional[Installer] = None
 
     class Config:
         orm_mode = True
@@ -33,7 +46,7 @@ class DeviceCreate(DeviceBase):
     class Config:
         orm_mode = True
 
-# Bridges
+
 
 
 class BridgeBase(BaseModel):
@@ -138,7 +151,6 @@ class CompiledModelBase(BaseModel):
     """"A Model that has been compiled with TFLite to fit a MCU.
     """
     created: datetime.datetime | None
-    compiler_id: int | None  # relationship
     model_id: int  # relationship
     model_path: str
 

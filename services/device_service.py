@@ -1,6 +1,7 @@
-from sqlalchemy.orm import Session
-from schemas import schemas
+from sqlalchemy import select
+from sqlalchemy.orm import Session, defer
 from db import models
+from schemas import schemas
 
 
 def get_all_devices(database: Session):
@@ -8,6 +9,7 @@ def get_all_devices(database: Session):
     """
 
     result = database.query(models.Device).all()
+    
     return result
 
 
