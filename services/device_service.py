@@ -1,5 +1,5 @@
-from sqlalchemy import select
-from sqlalchemy.orm import Session, defer
+from sqlalchemy.orm import Session
+
 from db import models
 from schemas import schemas
 
@@ -9,7 +9,7 @@ def get_all_devices(database: Session):
     """
 
     result = database.query(models.Device).all()
-    
+
     return result
 
 

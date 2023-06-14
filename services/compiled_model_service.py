@@ -1,6 +1,6 @@
 import json
-import requests
 from datetime import datetime
+import requests
 from sqlalchemy.orm import Session
 # , convert_to_c_array, convert_model_to_cc
 from TinyMLaaS_main.compiling import convert_model
