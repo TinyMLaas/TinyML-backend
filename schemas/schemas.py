@@ -6,10 +6,14 @@ from pydantic.types import Optional
 
 
 class InstallerBase(BaseModel):
+    """Base for Installer model. Lacks id as it is assigned by database.
+    """
     name: str = Field(min_length=1)
 
 
 class Installer(InstallerBase):
+    """If Installer is in database, it always has an id.
+    """
     id: int
 
     class Config:
@@ -22,11 +26,10 @@ class DeviceBase(BaseModel):
     """
     name: str = Field(min_length=1)
     connection: str | None = Field(default=None, min_length=1)
-    installer_id: int 
+    installer_id: int
     model: str = Field(min_length=1)
     description: str = Field(min_length=1)
     serial:  str = Field(min_length=1)
-
 
 
 class Device(DeviceBase):
@@ -45,8 +48,6 @@ class DeviceCreate(DeviceBase):
 
     class Config:
         orm_mode = True
-
-
 
 
 class BridgeBase(BaseModel):
@@ -140,6 +141,9 @@ class ModelPlot(ModelBase):
 
 
 class ModelTrained(Model):
+    """A trained model includes prediction image, the prediction that 
+    the model has made of the image and some statistics in a plot.
+    """
     prediction_image: str
     prediction: str
     statistic_image: bytes

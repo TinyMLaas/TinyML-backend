@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, LargeBinary, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 
 
@@ -22,7 +22,7 @@ class Device(Base):
 
     bridge = relationship("Bridge", back_populates="device")
     installer = relationship("Installer", back_populates="device")
-    
+
 
 
 class Installer(Base):
@@ -32,7 +32,7 @@ class Installer(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
-    
+
     device = relationship("Device", back_populates="installer", cascade="all, delete-orphan")
 
 

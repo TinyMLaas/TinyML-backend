@@ -1,7 +1,5 @@
-from db import models
-from schemas import schemas
 from sqlalchemy.orm import Session
-
+from db import models
 
 
 def get_all_installers(database: Session):
@@ -9,5 +7,5 @@ def get_all_installers(database: Session):
     """
 
     result = database.query(models.Installer).all()
-    
+
     return result
