@@ -164,6 +164,13 @@ class CompiledModel(CompiledModelBase):
         orm_mode = True
 
 
+class CompiledModelFile(CompiledModel):
+    """With the compiled model file as string
+    """
+
+    file: str
+
+
 class CompiledModelCreate(CompiledModelBase):
     """When creating a new CompiledModel, there is yet no id.
     """
