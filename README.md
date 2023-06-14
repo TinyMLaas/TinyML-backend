@@ -49,7 +49,12 @@ DATABASE_URL="sqlite:///./tiny_mlaas.db"
 
 ## Machine learning modules setup
 
+The projects main repository contains the machine learning modules. Download the modules by running the following command in the backend root directory:
 
+```
+svn checkout https://github.com/TinyMLaas/TinyMLaaS/trunk/TinyMLaaS_main
+```
+Optionally clone the main [repository](https://github.com/TinyMLaas/TinyMLaaS) and copy or [symlink](https://www.freecodecamp.org/news/linux-ln-how-to-create-a-symbolic-link-in-linux-example-bash-command/) the TinyMLaaS_main folder into the backend's root directory.
 
 ## Run app
 
