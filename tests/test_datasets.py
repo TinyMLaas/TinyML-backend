@@ -18,7 +18,7 @@ class GetAllDatasets(unittest.TestCase):
         response = self.client.get(
             "/datasets/"
         )
-        
+
         self.assertIsNotNone(response.text)
         assert response.status_code == 200
 
@@ -39,7 +39,7 @@ class AddNewDataset(unittest.TestCase):
         response = self.client.post(
             "/datasets/?dataset_name=test&dataset_desc=this%20is%20a%20test%20dataset"
         )
-        
+
         assert response.status_code == 201
 
         check_added = self.client.get(

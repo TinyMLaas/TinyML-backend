@@ -20,7 +20,7 @@ async def train_model(
 
 @router.post("/models/datasets/", status_code=201, response_model=schemas.ModelTrained)
 async def train_model_dataset_id_in_training_data(
-    trainingdata: schemas.ModelBase, 
+    trainingdata: schemas.ModelBase,
     lossfunc: schemas.LossFunctions,
     database: Session = Depends(get_db)):
     """Train a model"""

@@ -20,6 +20,30 @@ class Installer(InstallerBase):
         orm_mode = True
 
 
+class BridgeBase(BaseModel):
+    """Base for Bridge model. Lacks id as it is assigned by database.
+    """
+    ip_address: IPv4Address
+    name: str | None = None
+
+
+class Bridge(BridgeBase):
+    """If Bridge is in database, it always has an id.
+    """
+    id: int
+    
+    class Config:
+        orm_mode = True
+
+
+class BridgeCreate(BridgeBase):
+    """When creating a new Bridge, there is yet no id.
+    """
+
+    class Config:
+        orm_mode = True
+
+
 # Devices
 class DeviceBase(BaseModel):
     """Base for Device model. Lacks id as it is assigned by database.
@@ -37,6 +61,7 @@ class Device(DeviceBase):
     """
     id: int
     installer: Optional[Installer] = None
+    bridge: Optional[Bridge] = None
 
     class Config:
         orm_mode = True
@@ -44,30 +69,6 @@ class Device(DeviceBase):
 
 class DeviceCreate(DeviceBase):
     """When creating a new Device, there is yet no id.
-    """
-
-    class Config:
-        orm_mode = True
-
-
-class BridgeBase(BaseModel):
-    """Base for Bridge model. Lacks id as it is assigned by database.
-    """
-    ip_address: IPv4Address
-    name: str | None = None
-
-
-class Bridge(BridgeBase):
-    """If Bridge is in database, it always has an id.
-    """
-    id: int
-
-    class Config:
-        orm_mode = True
-
-
-class BridgeCreate(BridgeBase):
-    """When creating a new Bridge, there is yet no id.
     """
 
     class Config:

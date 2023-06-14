@@ -77,7 +77,7 @@ def add_image_to_dataset(dataset_id,files, database: Session):
         files: the files to be added to the path
         database: The db session you need for the path
 
-    """ 
+    """
     dataset = database.query(models.Dataset).filter(
     models.Dataset.id == dataset_id).first()
     path = dataset.path
