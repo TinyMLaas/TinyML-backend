@@ -190,3 +190,16 @@ class LossFunctions(str, Enum):
 
     categorical_crossentropy = "Categorical crossentropy"
     sparse_categorical_crossentropy = "Sparse Categorical crossentropy"
+
+
+class ObservationModelBase(BaseModel):
+    """Class for getting and returning values for observation
+    """
+    bridge_id: int
+    device_id: int
+
+
+class ObservationModelReturn(ObservationModelBase):
+    """When returning, the observation has value
+    """
+    observation_value: int
