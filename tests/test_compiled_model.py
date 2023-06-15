@@ -12,12 +12,13 @@ from tests.setup_tests import setup_database, teardown_database
 # Testaa, että malli kääntyy x 2
 # Tarkista, että get_all palauttaa listan jossa kaksi mallia
 
+
 class CompileNewModel(unittest.TestCase):
     @classmethod
     def setup_class(self):
         setup_database()
         self.client = TestClient(app)
-        
+
         parameters = {
             "epochs": 1,
             "img_width": 96,
@@ -36,7 +37,6 @@ class CompileNewModel(unittest.TestCase):
         )
 
         self.model_id = json.loads(response.text)["id"]
-
 
     def test_compile_a_new_model(self):
 
@@ -47,10 +47,16 @@ class CompileNewModel(unittest.TestCase):
         self.assertIsNotNone(compile_response.text)
         assert compile_response.status_code == 201
 
-        @classmethod
-        def teardown_class(self):
-            teardown_database()
+    @classmethod
+    def teardown_class(self):
+        teardown_database()
 
+    def test_get_the_compiled_model(self):
+        compile_response = self.client.get(
+            "/compiled_models/1")
+        assert compile_response.status_code == 200
+        self.assertEqual('#include "model.h"',
+                         compile_response.text.split('\n')[0])
 
 
 class GetAllModels(unittest.TestCase):
@@ -58,7 +64,7 @@ class GetAllModels(unittest.TestCase):
     def setup_class(self):
         setup_database()
         self.client = TestClient(app)
-        
+
         parameters = {
             "epochs": 1,
             "img_width": 96,
@@ -77,15 +83,14 @@ class GetAllModels(unittest.TestCase):
         )
 
         self.model_id = json.loads(response.text)["id"]
-        
-        self.client.post(
-            f"/compiled_models/models/{self.model_id}",
-        )
-        
+
         self.client.post(
             f"/compiled_models/models/{self.model_id}",
         )
 
+        self.client.post(
+            f"/compiled_models/models/{self.model_id}",
+        )
 
     def test_get_all_compiled_models(self):
         response = self.client.get("/compiled_models/")
@@ -96,7 +101,6 @@ class GetAllModels(unittest.TestCase):
 
         self.assertEqual(2, len(res))
         self.assertEqual(list, type(res))
-
 
     @classmethod
     def teardown_class(self):

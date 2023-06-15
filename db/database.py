@@ -1,5 +1,5 @@
 import os
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker, declarative_base
 
 
@@ -36,6 +36,7 @@ def get_db():
         session(): Database session.
     """
     database = session()
+
     try:
         yield database
     finally:

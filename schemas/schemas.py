@@ -2,38 +2,22 @@ import datetime
 from enum import Enum
 from ipaddress import IPv4Address
 from pydantic import BaseModel, Field
+from pydantic.types import Optional
 
 
-# Devices
-class DeviceBase(BaseModel):
-    """Base for Device model. Lacks id as it is assigned by database.
+class InstallerBase(BaseModel):
+    """Base for Installer model. Lacks id as it is assigned by database.
     """
     name: str = Field(min_length=1)
-    connection: str | None = Field(default=None, min_length=1)
-    installer: str | None = Field(default=None, min_length=1)
-    compiler: str | None = Field(default=None, min_length=1)
-    model: str = Field(min_length=1)
-    description: str = Field(min_length=1)
-    serial:  str = Field(min_length=1)
 
 
-class Device(DeviceBase):
-    """If Device is in database, it always has an id.
+class Installer(InstallerBase):
+    """If Installer is in database, it always has an id.
     """
     id: int
 
     class Config:
         orm_mode = True
-
-
-class DeviceCreate(DeviceBase):
-    """When creating a new Device, there is yet no id.
-    """
-
-    class Config:
-        orm_mode = True
-
-# Bridges
 
 
 class BridgeBase(BaseModel):
@@ -47,13 +31,44 @@ class Bridge(BridgeBase):
     """If Bridge is in database, it always has an id.
     """
     id: int
-
+    
     class Config:
         orm_mode = True
 
 
 class BridgeCreate(BridgeBase):
     """When creating a new Bridge, there is yet no id.
+    """
+
+    class Config:
+        orm_mode = True
+
+
+# Devices
+class DeviceBase(BaseModel):
+    """Base for Device model. Lacks id as it is assigned by database.
+    """
+    name: str = Field(min_length=1)
+    connection: str | None = Field(default=None, min_length=1)
+    installer_id: int
+    model: str = Field(min_length=1)
+    description: str = Field(min_length=1)
+    serial:  str = Field(min_length=1)
+
+
+class Device(DeviceBase):
+    """If Device is in database, it always has an id.
+    """
+    id: int
+    installer: Optional[Installer] = None
+    bridge: Optional[Bridge] = None
+
+    class Config:
+        orm_mode = True
+
+
+class DeviceCreate(DeviceBase):
+    """When creating a new Device, there is yet no id.
     """
 
     class Config:
@@ -127,6 +142,9 @@ class ModelPlot(ModelBase):
 
 
 class ModelTrained(Model):
+    """A trained model includes prediction image, the prediction that 
+    the model has made of the image and some statistics in a plot.
+    """
     prediction_image: str
     prediction: str
     statistic_image: bytes
@@ -138,7 +156,6 @@ class CompiledModelBase(BaseModel):
     """"A Model that has been compiled with TFLite to fit a MCU.
     """
     created: datetime.datetime | None
-    compiler_id: int | None  # relationship
     model_id: int  # relationship
     model_path: str
 
@@ -150,6 +167,13 @@ class CompiledModel(CompiledModelBase):
 
     class Config:
         orm_mode = True
+
+
+class CompiledModelFile(CompiledModel):
+    """With the compiled model file as string
+    """
+
+    file: str
 
 
 class CompiledModelCreate(CompiledModelBase):
@@ -166,3 +190,11 @@ class LossFunctions(str, Enum):
 
     categorical_crossentropy = "Categorical crossentropy"
     sparse_categorical_crossentropy = "Sparse Categorical crossentropy"
+
+
+class Observation(BaseModel):
+    """Class for getting and returning values for observation
+    """
+    bridge_id: int
+    device_id: int
+    observation_value: int
