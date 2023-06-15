@@ -47,9 +47,9 @@ class CompileNewModel(unittest.TestCase):
         self.assertIsNotNone(compile_response.text)
         assert compile_response.status_code == 201
 
-        @classmethod
-        def teardown_class(self):
-            teardown_database()
+    @classmethod
+    def teardown_class(self):
+        teardown_database()
 
     def test_get_the_compiled_model(self):
         compile_response = self.client.get(
