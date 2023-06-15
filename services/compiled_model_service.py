@@ -87,7 +87,7 @@ def install_to_device(compiled_model_id: int, bridge_id: int, device_id: int, da
         database, bridge_id).ip_address
     device = device_service.get_a_device(database, device_id)
     serial, installer = device.serial, device.installer.name
-    
+
     data = {
         "device": {
             "installer": installer,
@@ -97,7 +97,7 @@ def install_to_device(compiled_model_id: int, bridge_id: int, device_id: int, da
     }
     res = requests.post(
         f'http://{bridge_address}:5000/install/', json=data, timeout=(5, None))
-    
+
     print(res.text)
-    
+
     return {"status": "some"}
