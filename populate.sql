@@ -18,7 +18,8 @@ INSERT INTO
   Datasets(path, name, description)
 VALUES
   ('data/cars_dataset/', 'Car recognition', 'Empty rooms vs. pictures of cars'),
-  ('data/people_dataset/', 'Person recognition', 'Empty rooms vs. pictures of people')
+  ('data/people_dataset/', 'Person recognition', 'Empty rooms vs. pictures of people'),
+  ('data/parking_space_dataset/', 'Free parking space recognition', 'Empty parking space vs. occupied parking space')
 ;
 
 INSERT INTO
