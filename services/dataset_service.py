@@ -2,7 +2,7 @@ import os
 
 from sqlalchemy.orm import Session
 import cv2
-from schemas import schemas
+from schemas import dataset as dataset_schema
 from db import models
 from config import DATASET_DIR
 
@@ -23,7 +23,7 @@ def get_directory_size(path):
 
 
 def get_datasets(database: Session):
-    """Returns a list schemas.Dataset objects
+    """Returns a list dataset_schema.Dataset objects
     of all available datasets in database.
     """
     result = database.query(models.Dataset).all()
@@ -32,7 +32,7 @@ def get_datasets(database: Session):
 
     for item in result:
         size = f"{get_directory_size(item.path)/1048576:.1f} MB"
-        dataset = schemas.Dataset(
+        dataset = dataset_schema.Dataset(
             id=item.id,
             name=item.name,
             path=item.path,
@@ -54,7 +54,7 @@ def get_dataset_path_by_id(database: Session, id: int):
 def add_dataset(dataset_name, dataset_desc,database: Session):
     """Adds a new dataset folder and saves the path in the database.
     """
-    dataset = schemas.DatasetCreate(
+    dataset = dataset_schema.DatasetCreate(
         name=dataset_name,
         path="nopath",
         description=dataset_desc)

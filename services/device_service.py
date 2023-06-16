@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 
 from db import models
-from schemas import schemas
+from schemas import device as device_schema
 
 
 def get_all_devices(database: Session):
@@ -27,7 +27,7 @@ def remove_device(database: Session, device_id: int):
     database.commit()
 
 
-def add_device(database: Session, device: schemas.DeviceCreate):
+def add_device(database: Session, device: device_schema.DeviceCreate):
     """Add a new device to the software
 
     Args:

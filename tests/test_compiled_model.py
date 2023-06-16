@@ -55,7 +55,7 @@ class CompileNewModel(unittest.TestCase):
         compile_response = self.client.get(
             "/compiled_models/1")
         assert compile_response.status_code == 200
-        self.assertEqual('#include "model.h"',
+        self.assertEqual('#include "person_detect_model_data.h"',
                          compile_response.text.split('\n')[0])
 
 

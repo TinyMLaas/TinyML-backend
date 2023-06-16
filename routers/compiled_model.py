@@ -1,10 +1,9 @@
 from fastapi import APIRouter, Depends
 from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
-import schemas
 from services import compiled_model_service
 from db.database import get_db
-from schemas import schemas
+from schemas import compiled_model as compiled_model_schema
 
 router = APIRouter()
 
@@ -12,7 +11,7 @@ router = APIRouter()
 @router.post(
     "/compiled_models/models/{model_id}",
     status_code=201,
-    response_model=schemas.CompiledModel
+    response_model=compiled_model_schema.CompiledModel
 )
 async def compile_model(model_id, database: Session = Depends(get_db)):
     """Compile an existing model"""
@@ -25,7 +24,7 @@ async def compile_model(model_id, database: Session = Depends(get_db)):
 @router.get(
     "/compiled_models/",
     status_code=200,
-    response_model=list[schemas.CompiledModel]
+    response_model=list[compiled_model_schema.CompiledModel]
 )
 async def get_compiled_models(database: Session = Depends(get_db)):
     """Display compiled models"""

@@ -5,7 +5,8 @@ from sqlalchemy.orm import Session
 # , convert_to_c_array, convert_model_to_cc
 from TinyMLaaS_main.compiling import convert_model
 from db import models
-from schemas import schemas
+from schemas import compiled_model as compiled_model_schema
+from schemas import model as model_schema
 from config import COMPILED_MODEL_DIR
 from services import bridge_service, device_service
 
@@ -23,7 +24,7 @@ def compile_model(database: Session, model_id: int):
 
     now = datetime.now()
 
-    db_model = schemas.CompiledModelCreate(
+    db_model = compiled_model_schema.CompiledModelCreate(
         created=now,
         compiler_id=None,
         model_id=model_id,
@@ -51,7 +52,7 @@ def get_all_compiled_models(database: Session):
     return result
 
 
-def save_compiled_model(compiled_model: schemas.ModelCreate, database: Session):
+def save_compiled_model(compiled_model: model_schema.ModelCreate, database: Session):
     """Saves model to database
     """
     db_model = models.CompiledModel(**compiled_model.dict())

@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from schemas import schemas
+from schemas import bridge as bridge_schema
 from db import models
 
 
@@ -25,7 +25,7 @@ def remove_bridge(database: Session, bridge_id: int):
     database.commit()
 
 
-def add_bridge(database: Session, bridge: schemas.BridgeCreate):
+def add_bridge(database: Session, bridge: bridge_schema.BridgeCreate):
     """Add a new Bridge to the software
 
     Args:

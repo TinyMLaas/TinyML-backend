@@ -2,15 +2,15 @@ from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 
 from services import device_service
-from schemas import schemas
+from schemas import device as device_schema
 from db.database import get_db
 
 
 router = APIRouter()
 
 
-@router.post("/devices/", status_code=201, response_model=schemas.Device)
-async def add_device(device: schemas.DeviceCreate, database: Session = Depends(get_db)):
+@router.post("/devices/", status_code=201, response_model=device_schema.Device)
+async def add_device(device: device_schema.DeviceCreate, database: Session = Depends(get_db)):
     """Adds a device"""
     try:
         response = device_service.add_device(database, device)
@@ -21,7 +21,7 @@ async def add_device(device: schemas.DeviceCreate, database: Session = Depends(g
     return response
 
 
-@router.get("/devices/", status_code=200, response_model=list[schemas.Device])
+@router.get("/devices/", status_code=200, response_model=list[device_schema.Device])
 async def list_registered_devices(database: Session = Depends(get_db)):
     """Displays registered devices"""
     response = device_service.get_all_devices(database)

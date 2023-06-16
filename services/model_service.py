@@ -7,7 +7,7 @@ from fastapi.encoders import jsonable_encoder
 from TinyMLaaS_main.training import TrainModel
 from services import dataset_service
 from db import models
-from schemas import schemas
+from schemas import model as model_schema
 from config import MODEL_DIR
 
 
@@ -32,7 +32,7 @@ def training(training_data, lossfunc, database: Session, dataset_id: int = None)
 
     now = datetime.now()
 
-    db_model = schemas.ModelCreate(dataset_id=training_data.dataset_id,
+    db_model = model_schema.ModelCreate(dataset_id=training_data.dataset_id,
                                    parameters=parameters, description=training_data.description,
                                    created=now, model_path="")
 
@@ -70,7 +70,7 @@ def training(training_data, lossfunc, database: Session, dataset_id: int = None)
     return db_model
 
 
-def savemodel(model: schemas.ModelCreate, database: Session):
+def savemodel(model: model_schema.ModelCreate, database: Session):
     """Saves model to a database"""
 
     db_model = models.Model(**model.dict())

@@ -2,15 +2,15 @@ from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 
 from services import bridge_service
-from schemas import schemas
+from schemas import bridge as bridge_schema
 from db.database import get_db
 
 
 router = APIRouter()
 
 
-@router.post("/bridges/", status_code=201, response_model=schemas.Bridge)
-async def add_bridge(bridge: schemas.BridgeCreate, database: Session = Depends(get_db)):
+@router.post("/bridges/", status_code=201, response_model=bridge_schema.Bridge)
+async def add_bridge(bridge: bridge_schema.BridgeCreate, database: Session = Depends(get_db)):
     """Adds a bridge."""
     try:
         response = bridge_service.add_bridge(database, bridge)
@@ -21,7 +21,7 @@ async def add_bridge(bridge: schemas.BridgeCreate, database: Session = Depends(g
     return response
 
 
-@router.get("/bridges/", status_code=200, response_model=list[schemas.Bridge])
+@router.get("/bridges/", status_code=200, response_model=list[bridge_schema.Bridge])
 async def get_registered_bridges(database: Session = Depends(get_db)):
     """Displays registered Bridges"""
     response = bridge_service.get_all_bridges(database)
