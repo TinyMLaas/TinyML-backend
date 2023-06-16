@@ -197,4 +197,4 @@ class Observation(BaseModel):
     """
     bridge_id: int
     device_id: int
-    observation_value: int
+    observation_value: dict

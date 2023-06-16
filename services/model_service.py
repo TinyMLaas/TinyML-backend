@@ -21,6 +21,8 @@ def training(training_data, lossfunc, database: Session, dataset_id: int = None)
     library base64. This means that the pictures need to be decoded with the
     same library/equivalent library."""
 
+    print(lossfunc) 
+    
     if dataset_id is not None:
         training_data.dataset_id = dataset_id
     dataset_path = dataset_service.get_dataset_path_by_id(
