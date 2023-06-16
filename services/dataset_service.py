@@ -1,10 +1,10 @@
 import os
 
 from sqlalchemy.orm import Session
+import cv2
 from schemas import schemas
 from db import models
 from config import DATASET_DIR
-import cv2
 
 
 def get_directory_size(path):
@@ -52,6 +52,8 @@ def get_dataset_path_by_id(database: Session, id: int):
 
 
 def add_dataset(dataset_name, dataset_desc,database: Session):
+    """Adds a new dataset folder and saves the path in the database.
+    """
     dataset = schemas.DatasetCreate(
         name=dataset_name,
         path="nopath",

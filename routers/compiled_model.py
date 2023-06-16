@@ -59,5 +59,5 @@ async def install_model_to_device_on_brdige(compiled_model_id, bridge_id,
     """
     res = compiled_model_service.install_to_device(
         compiled_model_id, bridge_id, device_id, database)
-    
+
     return res

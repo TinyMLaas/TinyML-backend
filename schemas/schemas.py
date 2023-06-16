@@ -31,7 +31,7 @@ class Bridge(BridgeBase):
     """If Bridge is in database, it always has an id.
     """
     id: int
-    
+
     class Config:
         orm_mode = True
 

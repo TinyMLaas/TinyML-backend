@@ -1,7 +1,6 @@
 import json
 import requests
 from sqlalchemy.orm import Session
-from db import models
 from services import device_service, bridge_service
 
 
