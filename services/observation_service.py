@@ -1,7 +1,8 @@
+import json
 import requests
 from sqlalchemy.orm import Session
-from db import models
 from services import device_service, bridge_service
+
 
 def observe_device_on_bridge(database: Session, bridge_id: int, device_id: int):
     """Call the wanted bridge to read the observations of a specified device on that bridge
@@ -25,4 +26,4 @@ def observe_device_on_bridge(database: Session, bridge_id: int, device_id: int):
         timeout=(5, None)
         )
 
-    return res.text
+    return json.loads(res.text)

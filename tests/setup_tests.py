@@ -39,9 +39,15 @@ def setup_database():
 
 
 def teardown_database():
+    
     if os.path.exists("test_database.db") & cleanup:
         os.remove("test_database.db")
-    if os.path.exists("test_models/") & cleanup:
-        shutil.rmtree("test_models/")
-    if os.path.exists("test_compiled_models") & cleanup:
-        shutil.rmtree("test_compiled_models")
+    
+    test_dirs = [
+        "test_models/",
+        "test_compiled_models",
+        "testdata"
+    ]
+    
+    if cleanup:
+        [shutil.rmtree(dir) for dir in test_dirs if os.path.exists(dir)]

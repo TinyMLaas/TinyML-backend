@@ -31,7 +31,7 @@ class Bridge(BridgeBase):
     """If Bridge is in database, it always has an id.
     """
     id: int
-    
+
     class Config:
         orm_mode = True
 
@@ -197,4 +197,4 @@ class Observation(BaseModel):
     """
     bridge_id: int
     device_id: int
-    observation_value: int
+    observation_value: dict
