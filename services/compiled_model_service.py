@@ -99,6 +99,4 @@ def install_to_device(compiled_model_id: int, bridge_id: int, device_id: int, da
     res = requests.post(
         f'http://{bridge_address}:5000/install/', json=data, timeout=(5, None))
 
-    print(res.text)
-
-    return {"status": "some"}
+    return res.text

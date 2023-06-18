@@ -62,3 +62,20 @@ def get_devices(bridge_id: int, database: Session):
     response = requests.get(address, timeout=(5, None))
 
     return json.loads(response.text)
+
+
+def ping_bridge(bridge_id: int, database: Session):
+    """Send request to bridge to see if it is up
+    """
+
+    bridge = get_a_bridge(database, bridge_id)
+
+    address = "http://" + bridge.ip_address + ":5000/health"
+
+    try:
+        response = requests.get(address, timeout=5)
+        if response.status_code == 200:
+            return {"online": True}
+        raise requests.exceptions.ConnectionError()
+    except requests.exceptions.ConnectionError:
+        return {"online": False}

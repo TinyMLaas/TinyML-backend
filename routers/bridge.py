@@ -45,3 +45,10 @@ async def get_bridge_devices(bridge_id, database: Session = Depends(get_db)):
     response = bridge_service.get_devices(bridge_id, database)
 
     return response
+
+
+@router.get("/bridges/{bridge_id}/health", status_code=200, response_model=bridge_schema.BridgeStatus)
+async def check_bridge_status(bridge_id, database: Session = Depends(get_db)):
+    """Ping the bridge to find out weather or not it is online"""
+    response = bridge_service.ping_bridge(bridge_id, database)
+    return response

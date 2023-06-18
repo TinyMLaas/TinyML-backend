@@ -36,3 +36,7 @@ class BridgeDevice(BaseModel):
 
 class BridgeDevices(BaseModel):
     devices: list[BridgeDevice]
+
+
+class BridgeStatus(BaseModel):
+    online: bool
