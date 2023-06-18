@@ -26,3 +26,13 @@ class BridgeCreate(BridgeBase):
 
     class Config:
         orm_mode = True
+
+
+class BridgeDevice(BaseModel):
+    manufacturer: str
+    product: str
+    serial: str
+
+
+class BridgeDevices(BaseModel):
+    devices: list[BridgeDevice]

@@ -1,3 +1,5 @@
+import requests
+import json
 from sqlalchemy.orm import Session
 from schemas import bridge as bridge_schema
 from db import models
@@ -47,3 +49,16 @@ def get_a_bridge(database: Session, bridge_id: int):
     bridge = database.query(models.Bridge).filter(
         models.Bridge.id == bridge_id).one()
     return bridge
+
+
+def get_devices(bridge_id: int, database: Session):
+    """Send request to the bridge to get all connected devices
+    """
+
+    bridge = get_a_bridge(database, bridge_id)
+
+    address = "http://" + bridge.ip_address + ":5000/devices"
+
+    response = requests.get(address, timeout=(5, None))
+
+    return json.loads(response.text)

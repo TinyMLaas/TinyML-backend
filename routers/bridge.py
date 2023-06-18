@@ -37,3 +37,11 @@ async def remove_registered_bridge(bridge_id, database: Session = Depends(get_db
     except Exception as exc:
         raise HTTPException(
             status_code=400, detail="Unknown bridge id.") from exc
+
+
+@router.get("/bridges/{bridge_id}/devices", status_code=200, response_model=bridge_schema.BridgeDevices)
+async def get_bridge_devices(bridge_id, database: Session = Depends(get_db)):
+    """Get the devices connected to the bridge"""
+    response = bridge_service.get_devices(bridge_id, database)
+
+    return response
