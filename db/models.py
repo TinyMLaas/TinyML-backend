@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Boolean
 from sqlalchemy.orm import relationship
 
 
@@ -24,7 +24,6 @@ class Device(Base):
     installer = relationship("Installer", back_populates="device")
 
 
-
 class Installer(Base):
     """MCU Compiler
     """
@@ -33,7 +32,8 @@ class Installer(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
 
-    device = relationship("Device", back_populates="installer", cascade="all, delete-orphan")
+    device = relationship(
+        "Device", back_populates="installer", cascade="all, delete-orphan")
 
 
 class Bridge(Base):
@@ -43,10 +43,12 @@ class Bridge(Base):
     __tablename__ = "Bridges"
 
     id = Column(Integer, primary_key=True, index=True)
-    ip_address = Column(String)
+    address = Column(String)
     name = Column(String)
+    https = Column(Boolean)
 
-    device = relationship("Device", back_populates="bridge", cascade="all, delete-orphan")
+    device = relationship("Device", back_populates="bridge",
+                          cascade="all, delete-orphan")
 
 
 class Dataset(Base):

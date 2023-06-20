@@ -1,5 +1,6 @@
 import requests
 import json
+import ipaddress
 from sqlalchemy.orm import Session
 from schemas import bridge as bridge_schema
 from db import models
@@ -34,8 +35,8 @@ def add_bridge(database: Session, bridge: bridge_schema.BridgeCreate):
         bridge: the Bridge to be added
     """
 
-    db_bridge = models.Bridge(ip_address=str(
-        bridge.ip_address), name=bridge.name)
+    db_bridge = models.Bridge(address=str(
+        bridge.address), name=bridge.name, https=bridge.https)
     database.add(db_bridge)
     database.commit()
     database.refresh(db_bridge)
@@ -51,13 +52,25 @@ def get_a_bridge(database: Session, bridge_id: int):
     return bridge
 
 
+def get_address(address: str):
+    try:
+        ipaddress.ip_address(address)
+        if "http://" not in address:
+            address = "http://" + address
+        address += ":5000"  # Later get port from database
+    except ValueError:
+        if "http://" not in address:
+            address = "http://" + address
+    return address
+
+
 def get_devices(bridge_id: int, database: Session):
     """Send request to the bridge to get all connected devices
     """
 
     bridge = get_a_bridge(database, bridge_id)
 
-    address = "http://" + bridge.ip_address + ":5000/devices"
+    address = get_address(bridge.address) + "/devices"
 
     response = requests.get(address, timeout=(5, None))
 
@@ -70,7 +83,7 @@ def ping_bridge(bridge_id: int, database: Session):
 
     bridge = get_a_bridge(database, bridge_id)
 
-    address = "http://" + bridge.ip_address + ":5000/health"
+    address = get_address(bridge.address) + "/devices"
 
     try:
         response = requests.get(address, timeout=5)
