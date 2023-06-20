@@ -52,15 +52,19 @@ def get_a_bridge(database: Session, bridge_id: int):
     return bridge
 
 
-def get_address(address: str):
+def get_address(address: str, https: bool):
+    if https:
+        prefix = "https://"
+    else:
+        prefix = "http://"
     try:
         ipaddress.ip_address(address)
-        if "http://" not in address:
-            address = "http://" + address
+        if prefix not in address:
+            address = prefix + address
         address += ":5000"  # Later get port from database
     except ValueError:
-        if "http://" not in address:
-            address = "http://" + address
+        if prefix not in address:
+            address = prefix + address
     return address
 
 
@@ -70,7 +74,7 @@ def get_devices(bridge_id: int, database: Session):
 
     bridge = get_a_bridge(database, bridge_id)
 
-    address = get_address(bridge.address) + "/devices"
+    address = get_address(bridge.address, bridge.https) + "/devices"
 
     response = requests.get(address, timeout=(5, None))
 
@@ -83,7 +87,7 @@ def ping_bridge(bridge_id: int, database: Session):
 
     bridge = get_a_bridge(database, bridge_id)
 
-    address = get_address(bridge.address) + "/devices"
+    address = get_address(bridge.address, bridge.https) + "/devices"
 
     try:
         response = requests.get(address, timeout=5)
@@ -91,4 +95,6 @@ def ping_bridge(bridge_id: int, database: Session):
             return {"online": True}
         raise requests.exceptions.ConnectionError()
     except requests.exceptions.ConnectionError:
+        return {"online": False}
+    except requests.exceptions.ReadTimeout:
         return {"online": False}
