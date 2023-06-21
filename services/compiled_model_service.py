@@ -9,6 +9,43 @@ from schemas import compiled_model as compiled_model_schema
 from schemas import model as model_schema
 from config import COMPILED_MODEL_DIR
 from services import bridge_service, device_service
+from tf_docker.compile import build_image, run_container, execute_command
+
+
+def docker_compile_model(database: Session, model_id: int):
+    """Uses Python SDK API for Docker to compile a trained model.
+    """
+    model = database.query(models.Model).filter(
+    models.Model.id == model_id).first()
+    dataset_path = model.dataset.path
+    model_path = model.model_path
+    model_params = json.loads(model.parameters.replace("'", '"'))
+
+    now = datetime.now()
+
+    db_model = compiled_model_schema.CompiledModelCreate(
+        created=now,
+        compiler_id=None,
+        model_id=model_id,
+        model_path=model_path
+    )
+
+    db_model = save_compiled_model(db_model, database)
+
+    build_image(dataset_path=dataset_path, model_path=model_path)
+
+    run_container()
+
+    execute_command(
+        dataset_path=dataset_path,
+        output_path=COMPILED_MODEL_DIR,
+        model_path=model_path,
+        model_params=model_params,
+        model_name=str(db_model.id)
+    )
+
+
+    return db_model
 
 
 def compile_model(database: Session, model_id: int):
