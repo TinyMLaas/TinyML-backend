@@ -2,6 +2,7 @@ import sqlite3
 import os
 import shutil
 import unittest
+from unittest import mock
 import json
 from fastapi.testclient import TestClient
 from main import app
@@ -11,6 +12,23 @@ from tests.setup_tests import setup_database, teardown_database
 # Kouluta malli
 # Testaa, että malli kääntyy x 2
 # Tarkista, että get_all palauttaa listan jossa kaksi mallia
+
+
+def mock_install_post(*args, **kwargs):
+    class MockResponse:
+        def __init__(self, json_data, status_code):
+            self.text = json_data
+            self.status_code = status_code
+
+    if args[0] == "http://192.168.0.7:5000/install/":
+        if kwargs['json']['device']['serial'] != '707B266C064B14A6':
+            print(kwargs['json']['device'])
+            return MockResponse('Wrong device', 400)
+        if len(kwargs['json']['model']) == 0:
+            return MockResponse('No model', 400)
+        return MockResponse('Success', 201)
+
+    return MockResponse(None, 400)
 
 
 class CompileNewModel(unittest.TestCase):
@@ -55,7 +73,7 @@ class CompileNewModel(unittest.TestCase):
         compile_response = self.client.get(
             "/compiled_models/1")
         assert compile_response.status_code == 200
-        self.assertEqual('#include "person_detect_model_data.h"',
+        self.assertEqual('#include "target_model.h"',
                          compile_response.text.split('\n')[0])
 
 
@@ -101,6 +119,13 @@ class GetAllModels(unittest.TestCase):
 
         self.assertEqual(2, len(res))
         self.assertEqual(list, type(res))
+
+    @mock.patch('services.compiled_model_service.requests.post', side_effect=mock_install_post)
+    def test_install_compiled_model(self, mock_post):
+        response = self.client.post("/compiled_models/1/bridges/1/devices/1")
+
+        self.assertEqual(response.text, '"Success"')
+        self.assertEqual(response.status_code, 201)
 
     @classmethod
     def teardown_class(self):

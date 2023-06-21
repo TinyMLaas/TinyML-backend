@@ -2,7 +2,7 @@ import json
 from datetime import datetime
 import requests
 from sqlalchemy.orm import Session
-# , convert_to_c_array, convert_model_to_cc
+from fastapi.exceptions import HTTPException
 from TinyMLaaS_main.compiling import convert_model
 from db import models
 from schemas import compiled_model as compiled_model_schema
@@ -110,7 +110,7 @@ def get_compiled_model(compiled_model_id: int, database: Session):
 
     result = database.query(models.CompiledModel).filter(
         models.CompiledModel.id == compiled_model_id).one()
-    path = result.model_path + "/model.cc"
+    path = result.model_path + "/target_model.cc"
     return path
 
 
@@ -136,6 +136,7 @@ def install_to_device(compiled_model_id: int, bridge_id: int, device_id: int, da
     res = requests.post(
         f'http://{bridge_address}:5000/install/', json=data, timeout=(5, None))
 
-    print(res.text)
+    if res.status_code != 201:
+        raise HTTPException(status_code=res.status_code, detail=res.text)
 
-    return {"status": "some"}
+    return res.text

@@ -8,10 +8,10 @@ VALUES
 ;
 
 INSERT INTO 
-  Bridges(ip_address, name)
+  Bridges(address, name, https)
 VALUES
-  ('192.168.0.7', 'Coffee room'),
-  ('187.32.5.6', 'Parking lot')
+  ('192.168.0.7', 'Coffee room', 0),
+  ('187.32.5.6', 'Parking lot', 0)
 ;
 
 INSERT INTO

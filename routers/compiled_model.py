@@ -50,7 +50,7 @@ async def get_compiled_model(compiled_model_id, database: Session = Depends(get_
 
 
 @router.post(
-    "/compiled_models/{compiled_model_id}/bridges/{bridge_id}/devices/{device_id}", status_code=200
+    "/compiled_models/{compiled_model_id}/bridges/{bridge_id}/devices/{device_id}", status_code=201
 )
 async def install_model_to_device_on_brdige(compiled_model_id, bridge_id,
                                             device_id, database: Session = Depends(get_db)):

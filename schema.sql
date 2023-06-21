@@ -13,8 +13,9 @@ CREATE TABLE IF NOT EXISTS "Devices"(
   );
 CREATE TABLE IF NOT EXISTS "Bridges"(
   id INTEGER PRIMARY KEY AUTOINCREMENT, 
-  ip_address TEXT, 
-  name TEXT
+  address TEXT, 
+  name TEXT,
+  https BOOLEAN
   );
 CREATE TABLE IF NOT EXISTS "Installers"(
   id INTEGER PRIMARY KEY AUTOINCREMENT, 

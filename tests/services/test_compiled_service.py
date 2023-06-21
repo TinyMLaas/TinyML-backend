@@ -4,12 +4,12 @@ from services import compiled_model_service
 from tests.setup_tests import setup_database, teardown_database
 
 
-class BridgeService(unittest.TestCase):
+class CompiledModelService(unittest.TestCase):
     @classmethod
     def setup_class(self):
         setup_database()
 
-    def test_getting_a_single_bridge_by_id(self):
+    def test_getting_a_single_cmodel_by_id(self):
         database = db.database.session()
         db_model = db.models.CompiledModel(**{
             'created': None,
@@ -22,7 +22,7 @@ class BridgeService(unittest.TestCase):
             compiled_model_id=1, database=database)
         database.close()
         self.assertEqual(type(path), str)
-        self.assertEqual(path, 'test_compiled_models/model.cc')
+        self.assertEqual(path, 'test_compiled_models/target_model.cc')
 
     @classmethod
     def teardown_class(self):
