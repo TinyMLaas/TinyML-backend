@@ -122,7 +122,7 @@ def install_to_device(compiled_model_id: int, bridge_id: int, device_id: int, da
     with open(model_path, "r") as file:
         cmodel = file.read()
     bridge_address = bridge_service.get_a_bridge(
-        database, bridge_id).ip_address
+        database, bridge_id).address
     device = device_service.get_a_device(database, device_id)
     serial, installer = device.serial, device.installer.name
 
