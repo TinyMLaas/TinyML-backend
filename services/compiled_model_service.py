@@ -48,37 +48,37 @@ def docker_compile_model(database: Session, model_id: int):
     return db_model
 
 
-def compile_model(database: Session, model_id: int):
-    """Takes id of a trained model as parameter and compiles / converts it to
-    a Tensorflow Lite model.
-    """
+# def compile_model(database: Session, model_id: int):
+#     """Takes id of a trained model as parameter and compiles / converts it to
+#     a Tensorflow Lite model.
+#     """
 
-    model = database.query(models.Model).filter(
-        models.Model.id == model_id).first()
-    dataset_path = model.dataset.path
-    model_path = model.model_path
-    model_params = json.loads(model.parameters.replace("'", '"'))
+#     model = database.query(models.Model).filter(
+#         models.Model.id == model_id).first()
+#     dataset_path = model.dataset.path
+#     model_path = model.model_path
+#     model_params = json.loads(model.parameters.replace("'", '"'))
 
-    now = datetime.now()
+#     now = datetime.now()
 
-    db_model = compiled_model_schema.CompiledModelCreate(
-        created=now,
-        compiler_id=None,
-        model_id=model_id,
-        model_path=model_path
-    )
+#     db_model = compiled_model_schema.CompiledModelCreate(
+#         created=now,
+#         compiler_id=None,
+#         model_id=model_id,
+#         model_path=model_path
+#     )
 
-    db_model = save_compiled_model(db_model, database)
+#     db_model = save_compiled_model(db_model, database)
 
-    convert_model(
-        dataset_path=dataset_path,
-        output_path=COMPILED_MODEL_DIR,
-        model_path=model_path,
-        model_params=model_params,
-        model_name=str(db_model.id)
-    )
+#     convert_model(
+#         dataset_path=dataset_path,
+#         output_path=COMPILED_MODEL_DIR,
+#         model_path=model_path,
+#         model_params=model_params,
+#         model_name=str(db_model.id)
+#     )
 
-    return db_model
+#     return db_model
 
 
 def get_all_compiled_models(database: Session):

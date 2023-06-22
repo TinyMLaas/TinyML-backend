@@ -15,7 +15,6 @@ def build_image(dataset_path, model_path):
                 path=".",
                 dockerfile="compiling.Dockerfile",
                 tag="tensorflow_tinymlaas",
-                buildargs={"datapath": dataset_path, "modelpath": model_path},
                 rm=True
                 )
             print(res)
@@ -38,7 +37,7 @@ def run_container():
             image="tensorflow_tinymlaas",
             name="tensorflow_tinymlaas",
             volumes=[
-                "TinyMLaaS_main:/TinyMLaaS_main",
+                #"TinyMLaaS_main:/TinyMLaaS_main",
                 "/compiled_models:/compiled_models"
             ],
             tty=True,
@@ -54,6 +53,14 @@ def run_container():
 def execute_command(dataset_path, output_path, model_path, model_params, model_name):
     try:
         container = client.containers.get("tensorflow_tinymlaas")
+
+        # put needed files into running container
+        with tarfile.open("/dataset_and_model.tar", "w") as f:
+             f.add(dataset_path)
+             f.add(model_path)
+        
+        with open("/dataset_and_model.tar", "rb") as f:
+             container.put_archive(path=".", data=f) 
 
         params = json.dumps(model_params)
         command = f"""
@@ -71,7 +78,7 @@ def execute_command(dataset_path, output_path, model_path, model_params, model_n
         # the easiest way of getting the output to local
         # filesystem is to export it as a tar
 
-        path = f"./{output_path}/{model_name}/"
+        path = f"./{output_path}/{model_name}"
 
         if not os.path.exists(path):
             os.mkdir(path)
@@ -88,8 +95,6 @@ def execute_command(dataset_path, output_path, model_path, model_params, model_n
             tar_f.extractall(path=output_path)
 
         container.remove(force=True)
-        image = client.images.get("tensorflow_tinymlaas")
-        image.remove()
-
+        
     except Exception as e:
         print("Execution failed:", e)
