@@ -10,7 +10,7 @@ COPY ${modelpath} ${modelpath}
 
 COPY requirements.txt .
 
-VOLUME [ "TinyMLaaS_main", "compiled_models" ]
+VOLUME [ "TinyMLaaS_main", "compiled_models", "tensorflow_models" ]
 
 RUN pip install --no-cache-dir --upgrade pandas && \
     apt-get update && apt-get install git -y && \
