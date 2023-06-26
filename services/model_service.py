@@ -10,6 +10,8 @@ from db import models
 from schemas import model as model_schema
 from config import MODEL_DIR
 
+from tf_docker import compile
+
 
 def training(training_data, lossfunc, database: Session, dataset_id: int = None):
     """Initalize the training class for model training and train it with the
@@ -26,7 +28,7 @@ def training(training_data, lossfunc, database: Session, dataset_id: int = None)
     dataset_path = dataset_service.get_dataset_path_by_id(
         database, training_data.dataset_id)
 
-    trainmodel = TrainModel(dataset_path)
+    #trainmodel = TrainModel(dataset_path)
 
     parameters = training_data.parameters
 
@@ -42,7 +44,14 @@ def training(training_data, lossfunc, database: Session, dataset_id: int = None)
 
     model_path = MODEL_DIR + str(db_model["id"])
 
-    model, history, epochs_range = trainmodel.train(
+    # model, history, epochs_range = trainmodel.train(
+    #     parameters["img_height"], parameters["img_width"],
+    #     parameters["epochs"], lossfunc, parameters["batch_size"],
+    #     model_path
+    # )
+    
+    
+    model, history, epochs_range = compile.train_model(
         parameters["img_height"], parameters["img_width"],
         parameters["epochs"], lossfunc, parameters["batch_size"],
         model_path

@@ -102,6 +102,9 @@ def execute_command(dataset_path, output_path, model_path, model_params, model_n
 
 def train_model(dataset_path, img_heigth, img_width, epochs, lossfunc, batch_size, model_path):
 
+    build_image()
+    run_container()
+
     container = client.containers.get("tensorflow_tinymlaas")
 
     with tarfile.open("dataset.tar", "w") as f:
