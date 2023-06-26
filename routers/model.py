@@ -35,3 +35,13 @@ async def get_all_models(database: Session = Depends(get_db)):
 
     result = model_service.get_models(database)
     return result
+
+
+@router.put("/models/{model_id}/datasets/{dataset_id}", status_code=200, response_model=model_schema.ModelTrained)
+async def continue_training_model(
+    model_id: int,
+    dataset_id: int,
+    database: Session = Depends(get_db)):
+    """Further Trains a model"""
+    
+    return model_service.continue_training(database, model_id, dataset_id)

@@ -70,6 +70,47 @@ def training(training_data, lossfunc, database: Session, dataset_id: int = None)
     return db_model
 
 
+def continue_training(database: Session, model_id, dataset_id):    
+    #initiate the training class and dataset path
+    dataset_path = dataset_service.get_dataset_path_by_id(
+        database, dataset_id)
+    trainmodel = TrainModel(dataset_path)
+
+    #load the parameters and load the model
+    db_model = get_a_model(database, model_id)
+    parameter_string = db_model.parameters
+    parameter_string = parameter_string.replace("\'", "\"")
+    parameters = json.loads(parameter_string) 
+    db_model = db_model.__dict__
+
+
+    model, history, epochs_range = trainmodel.continue_training(
+        parameters["img_height"], parameters["img_width"],
+        parameters["epochs"], parameters["batch_size"],
+        db_model["model_path"]
+    )
+
+    db_model["parameters"] = parameters
+
+    class_names = [name for name in os.listdir(
+        dataset_path)]
+    image, prediction = trainmodel.prediction(model, class_names)
+    prediction_image = jsonable_encoder(image.getbuffer().tobytes(), custom_encoder={
+        bytes: lambda v: base64.b64encode(v).decode('utf-8')})
+
+    db_model["prediction_image"] = prediction_image
+    db_model["prediction"] = prediction
+
+    image2 = trainmodel.plot_statistics(history, epochs_range)
+
+    statistic_image = jsonable_encoder(image2.getbuffer().tobytes(), custom_encoder={
+        bytes: lambda v: base64.b64encode(v).decode('utf-8')})
+
+    db_model["statistic_image"] = statistic_image
+
+    return db_model   
+
+
 def savemodel(model: model_schema.ModelCreate, database: Session):
     """Saves model to a database"""
 
@@ -96,3 +137,11 @@ def get_models(database: Session):
     for model in result:
         model.parameters = json.loads(model.parameters.replace("'", '"'))
     return result
+
+def get_a_model(database: Session, model_id: int):
+    """get a specific model from database
+    """
+    
+    model = database.query(models.Model).filter(
+        models.Model.id == model_id).one()
+    return model
