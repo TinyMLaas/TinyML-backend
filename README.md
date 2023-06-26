@@ -70,8 +70,8 @@ Use the application with the project frontend [here](https://github.com/TinyMLaa
 
 ## Testing
 
-Run unit tests with:
+Run unit tests in the backend root folder with:
 
 ```
-python -m unittest discover -v
+pytest
 ```
