@@ -13,7 +13,7 @@ router = APIRouter()
     status_code=201,
     response_model=compiled_model_schema.CompiledModel
 )
-async def compile_model(model_id, database: Session = Depends(get_db)):
+async def docker_compile_model(model_id, database: Session = Depends(get_db)):
     """Compile an existing model"""
 
     response = compiled_model_service.compile_model(database, model_id)

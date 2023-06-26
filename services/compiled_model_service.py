@@ -3,7 +3,7 @@ from datetime import datetime
 import requests
 from sqlalchemy.orm import Session
 from fastapi.exceptions import HTTPException
-from TinyMLaaS_main.compiling import convert_model
+#from TinyMLaaS_main.compiling import convert_model
 from db import models
 from schemas import compiled_model as compiled_model_schema
 from schemas import model as model_schema
