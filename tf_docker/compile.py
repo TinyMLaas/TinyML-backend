@@ -114,7 +114,7 @@ def train_model(dataset_path, img_heigth, img_width, epochs, lossfunc, batch_siz
         container.put_archive(path=".", data=f)
 
     command = f"""
-        python tinymlaas_main/training.py 
+        python TinyMLaaS_main/training.py 
         {dataset_path} {img_heigth} {img_width} {epochs} {lossfunc} {batch_size} {model_path}
         """
 
@@ -127,7 +127,7 @@ def train_model(dataset_path, img_heigth, img_width, epochs, lossfunc, batch_siz
     # the easiest way of getting the output to local
     # filesystem is to export it as a tar
 
-    path = f"./ {model_path}"
+    path = f"./{model_path}"
 
     if not os.path.exists(path):
         os.mkdir(path)
