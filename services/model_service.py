@@ -51,7 +51,7 @@ def training(training_data, lossfunc, database: Session, dataset_id: int = None)
     # )
     
     
-    model, history, epochs_range = compile.train_model(
+    model, history, epochs_range = compile.train_model(dataset_path,
         parameters["img_height"], parameters["img_width"],
         parameters["epochs"], lossfunc, parameters["batch_size"],
         model_path
