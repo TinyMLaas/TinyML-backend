@@ -81,8 +81,15 @@ class AddNewBridges(unittest.TestCase):
         self.client = TestClient(app)
 
         self.bridge_to_add = {
-            "ip_address": "0.0.0.0",
+            "address": "0.0.0.0",
             "name": "Garage and mancave",
+            "https": "False"
+        }
+        
+        self.url_bridge_to_add = {
+            "address": "www.tinymlaas.com",
+            "name": "Parking lot",
+            "https": "True"
         }
 
     def test_bridge_is_added(self):
@@ -98,8 +105,22 @@ class AddNewBridges(unittest.TestCase):
 
         self.assertIn("Garage and mancave", check_added.text)
 
+
+    def test_url_bridge_is_added(self):
+        response = self.client.post(
+            "/bridges/",
+            json=self.url_bridge_to_add
+        )
+        assert response.status_code == 201
+
+        check_added = self.client.get(
+            "/bridges/"
+        )
+
+        self.assertIn("Garage and mancave", check_added.text)
+
     def test_return_error_if_incorrect_data_given(self):
-        self.bridge_to_add["ip_address"] = None
+        self.bridge_to_add["address"] = None
         response = self.client.post(
             "/bridges/",
             json=self.bridge_to_add
