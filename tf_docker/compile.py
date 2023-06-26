@@ -58,7 +58,7 @@ def execute_command(dataset_path, output_path, model_path, model_params, model_n
         with tarfile.open("/dataset_and_model.tar", "w") as f:
              f.add(dataset_path)
              f.add(model_path)
-        
+
         with open("/dataset_and_model.tar", "rb") as f:
              container.put_archive(path=".", data=f) 
 
@@ -94,7 +94,49 @@ def execute_command(dataset_path, output_path, model_path, model_params, model_n
         with tarfile.open(f"{path}/compiled_model.tar", "r") as tar_f:
             tar_f.extractall(path=output_path)
 
-        container.remove(force=True)
-        
+        #container.remove(force=True)
+
     except Exception as e:
         print("Execution failed:", e)
+
+
+def train_model(dataset_path, img_heigth, img_width, epochs, lossfunc, batch_size, model_path):
+
+    container = client.containers.get("tensorflow_tinymlaas")
+
+    with tarfile.open("dataset.tar", "w") as f:
+        f.add(dataset_path)
+
+    with open("dataset.tar", "rb") as f:
+        container.put_archive(path=".", data=f)
+
+    command = f"""
+        python tinymlaas_main/training.py 
+        {dataset_path} {img_heigth} {img_width} {epochs} {lossfunc} {batch_size} {model_path}
+        """
+
+    res = container.exec_run(
+        cmd=command
+    )
+
+    print(res)
+
+    # the easiest way of getting the output to local
+    # filesystem is to export it as a tar
+
+    path = f"./ {model_path}"
+
+    if not os.path.exists(path):
+        os.mkdir(path)
+
+    bits, stat = container.get_archive(
+        path=path
+    )
+
+    with open(f"{path}/trained_model.tar", "wb") as f:
+        for chunk in bits:
+            f.write(chunk)
+
+    with tarfile.open(f"{path}/trained_model.tar", "r") as tar_f:
+        tar_f.extractall(path=model_path)
+
