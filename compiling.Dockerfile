@@ -1,14 +1,14 @@
 FROM tensorflow/tensorflow
 
-ARG datapath
+#ARG datapath
 
-ARG modelpath
+#ARG modelpath
 
-COPY ${datapath} ${datapath}
+#COPY ${datapath} ${datapath}
 
-COPY ${modelpath} ${modelpath}
+#COPY ${modelpath} ${modelpath}
 
-COPY requirements.txt .
+#COPY requirements.txt .
 
 VOLUME [ "TinyMLaaS_main", "compiled_models", "tensorflow_models" ]
 
