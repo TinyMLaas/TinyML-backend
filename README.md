@@ -37,7 +37,6 @@ In a new terminal window, run the following commands to set up an sqlite databas
 sqlite3
 .open tiny_mlaas.db
 .read schema.sql
-.schema
 .read populate.sql
 ```
 
