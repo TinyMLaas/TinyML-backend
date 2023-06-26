@@ -32,7 +32,7 @@ def docker_compile_model(database: Session, model_id: int):
 
     db_model = save_compiled_model(db_model, database)
 
-    build_image(dataset_path=dataset_path, model_path=model_path)
+    build_image()
 
     run_container()
 

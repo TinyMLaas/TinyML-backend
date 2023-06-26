@@ -5,7 +5,7 @@ import tarfile
 
 client = docker.from_env()
 
-def build_image(dataset_path, model_path):
+def build_image():
     try:
         image = client.images.get("tensorflow_tinymlaas")
         print("Using current image.")
