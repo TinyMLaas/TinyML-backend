@@ -38,7 +38,7 @@ def run_container():
             name="tensorflow_tinymlaas",
             volumes=[
                 #"TinyMLaaS_main:/TinyMLaaS_main",
-                "/compiled_models:/compiled_models"
+                #"/compiled_models:/compiled_models"
             ],
             tty=True,
             detach=True
