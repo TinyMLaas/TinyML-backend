@@ -84,8 +84,11 @@ def install_to_device(compiled_model_id: int, bridge_id: int, device_id: int, da
     model_path = get_compiled_model(compiled_model_id, database)
     with open(model_path, "r") as file:
         cmodel = file.read()
-    bridge_address = bridge_service.get_a_bridge(
-        database, bridge_id).address
+    bridge = bridge_service.get_a_bridge(
+        database, bridge_id)
+
+    bridge_address = bridge_service.get_address(bridge.address, bridge.https) 
+
     device = device_service.get_a_device(database, device_id)
     serial, installer = device.serial, device.installer.name
 
@@ -97,7 +100,7 @@ def install_to_device(compiled_model_id: int, bridge_id: int, device_id: int, da
         "model": str(cmodel)
     }
     res = requests.post(
-        f'http://{bridge_address}:5000/install/', json=data, timeout=(5, None))
+        f'{bridge_address}/install/', json=data, timeout=(5, None))
 
     if res.status_code != 201:
         raise HTTPException(status_code=res.status_code, detail=res.text)
